@@ -1,0 +1,478 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>BigClown Alpha – Software Setup for Raspberry Pi Host Platform</title>
+
+    <link href="/bc-doc/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="https://www.bigclown.com/">
+  <img src="/bc-doc/images/bigclown-logo.png" alt="BigClown - Open-Source Electronics" />
+</a>
+
+    </header>
+
+    <article class="main-content alpha alpha_raspberry-pi">
+      <h1>
+        BigClown Alpha – Software Setup for Raspberry Pi Host Platform
+      </h1>
+      <div class="sect1">
+<h2 id="_prerequisites">Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>BigClown products (Bridge Module, sensors, actuators, &#8230;&#8203;)</p>
+</li>
+<li>
+<p>Raspberry Pi 3</p>
+</li>
+<li>
+<p>Power adapter with USB Micro-B plug (power for Raspberry Pi)</p>
+</li>
+<li>
+<p>USB cable type A to Micro-B (between Bridge Module and Raspberry Pi)</p>
+</li>
+<li>
+<p>MicroSD card (at least 4 GiB) – <a href="http://elinux.org/RPi_SD_cards">make sure the card is compatible</a></p>
+</li>
+<li>
+<p>MicroSD card reader</p>
+</li>
+<li>
+<p>Ethernet (LAN) cable</p>
+</li>
+<li>
+<p>LAN with DHCP server and internet connectivity</p>
+</li>
+<li>
+<p>Desktop environment (Windows, OS X, Linux)</p>
+</li>
+<li>
+<p>Administrator privileges (to write on the MicroSD card)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prepare_microsd_card_for_raspberry_pi">Prepare MicroSD card for Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download HypriotOS image <a href="https://docs.google.com/a/bigclown.com/uc?id=0B5pXL_JAACMvYU9DQm8xbFFvSkU&amp;export=download">hypriotos-rpi-v1.0.0-hub.zip</a>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+BigClown has changed the default hostname to “hub” in the original image. No other changes have been made.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_on_windows_desktop">On Windows desktop</h3>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>Unzip the image (e.g. using <a href="http://www.7-zip.org">7-Zip</a>).</p>
+</li>
+<li>
+<p>Write <code>hypriotos-rpi-v1.0.0-hub.img</code> to MicroSD card (e.g. using <a href="https://sourceforge.net/projects/win32diskimager/files/latest/download">Win32 Disk Imager</a>).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_os_x_desktop">On OS X desktop</h3>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>Open Terminal and navigate to your folder with downloads, for example:</p>
+<div class="literalblock">
+<div class="content">
+<pre>cd ~/Downloads</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Unzip the downloaded image:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">unzip hypriotos-rpi-v1.0.0-hub.zip</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Insert the MicroSD card to your Mac and find out what is the disk identifier (it will be /dev/diskX):</p>
+<div class="literalblock">
+<div class="content">
+<pre>diskutil list</pre>
+</div>
+</div>
+</li>
+<li>
+<p>You have to unmount the disk (replace X with the appropriate identifier):</p>
+<div class="literalblock">
+<div class="content">
+<pre>diskutil unmountDisk /dev/diskX</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Write the image to the card (replace X with the appropriate identifier):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">sudo dd if=hypriotos-rpi-v1.0.0-hub.img of=/dev/rdiskX bs=1m</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+“sudo” means the process will start with administrator privileges and may require your account password (if you are eligible for administrator rights).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will take some time.
+If you get a “permission denied” message, please make sure your MicroSD card is not write-protected (e.g. by SD card adapter).</p>
+</div>
+</li>
+<li>
+<p>Eject the card (replace X with the appropriate identifier):</p>
+<div class="literalblock">
+<div class="content">
+<pre>diskutil eject /dev/diskX</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_linux_desktop">On Linux desktop</h3>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>Open Terminal and navigate to your folder with downloads, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">cd ~/Downloads</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Unzip the downloaded image:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">unzip hypriotos-rpi-v1.0.0-hub.zip</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Insert the MicroSD card to your Linux desktop and find out what is the disk identifier (it will be /dev/sdX):</p>
+<div class="literalblock">
+<div class="content">
+<pre>lsblk</pre>
+</div>
+</div>
+</li>
+<li>
+<p>You have to unmount all disk partitions (replace X with the appropriate identifier):</p>
+<div class="literalblock">
+<div class="content">
+<pre>sudo umount /dev/sdX?</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+“sudo” means the process will start with administrator privileges and may require your account password (if you are eligible for administrator rights).
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Write the image to the card (replace X with the appropriate identifier):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">sudo dd if=hypriotos-rpi-v1.0.0-hub.img of=/dev/sdX bs=1M status=progress</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will take some time.
+If you get a “permission denied” message, please make sure your MicroSD card is not write-protected (e.g. by SD card adapter).</p>
+</div>
+</li>
+<li>
+<p>Eject the card (replace X with the appropriate identifier):</p>
+<div class="literalblock">
+<div class="content">
+<pre>eject /dev/sdX</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boot_raspberry_pi">Boot Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Insert the MicroSD card to Raspberry Pi.</p>
+</li>
+<li>
+<p>Plug-in the Ethernet cable to Raspberry Pi.</p>
+</li>
+<li>
+<p>Connect the USB power adapter to Raspberry Pi.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_log_in_to_raspberry_pi">Log-in to Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Next step is to login to Raspberry Pi via SSH terminal.</p>
+</div>
+<div class="paragraph">
+<p>You can access the device in two ways:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Using IP address (you have to determine what is the assigned address from the DHCP server).</p>
+</li>
+<li>
+<p>Using zeroconf mechanism by accessing “hub.local” host (this mechanism should work on any recent desktop).</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_on_windows_desktop_2">On Windows desktop</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a>.</p>
+</li>
+<li>
+<p>Open PuTTY and open SSH session:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use hostname: <strong>hub.local</strong> or <strong>raspberry-ip-address</strong></p>
+</li>
+<li>
+<p>Use login: <strong>pirate</strong></p>
+</li>
+<li>
+<p>Use password: <strong>hypriot</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_os_x_linux_desktop">On OS X &amp; Linux desktop</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open Terminal and connect to Raspberry Pi:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>using IP address: <code>ssh pirate@raspberry-ip-address</code>,</p>
+</li>
+<li>
+<p>or using zeroconf name: <code>ssh pirate@hub.local</code>.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Enter password: <strong>hypriot</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_time_setup_on_raspberry_pi">First-time setup on Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change password:</p>
+<div class="literalblock">
+<div class="content">
+<pre>passwd</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create data directory for container:</p>
+<div class="literalblock">
+<div class="content">
+<pre>sudo mkdir /var/hub</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notes_for_raspberry_pi_2">Notes for Raspberry Pi 2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are using Raspberry Pi 2, it is necessary to replace Caddy webserver binary to work properly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">wget -O - https://github.com/mholt/caddy/releases/download/v0.9.1/caddy_linux_arm7.tar.gz \
+  | tar -xz caddy_linux_arm7
+mv caddy_linux_arm7 /var/hub/caddy
+
+docker exec hub cp /var/hub/caddy /usr/local/bin/caddy</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_clown_hub_software_on_raspberry_pi">Run Clown.Hub software on Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>BigClown uses Docker container technology for seamless software delivery.</p>
+</div>
+<div class="paragraph">
+<p>Pull Docker image from Docker Hub and run the container in one command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
+  -v /var/hub:/var/hub -h hub-container --name hub clown/rpi-hub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can stop container by:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker stop hub</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And start it again by:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker start hub</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_open_the_browser_and_play_with_the_gadgets">Open the browser and play with the gadgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navigate to URL <a href="https://hub.local:8080/dashboard" class="bare">https://hub.local:8080/dashboard</a> or <a href="https://localhost:8080/dashboard" class="bare">https://localhost:8080/dashboard</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Be aware that the connection is not encrypted, so it’s not safe to access it over public internet.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mqtt_playground">MQTT playground</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Look at measured values (this will subscribe to messages from MQTT broker running inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub mosquitto_sub -v -t 'nodes/bridge/0/#'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set relay to “true” state (this will publish message to MQTT broker running inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub \
+  mosquitto_pub -t nodes/bridge/0/relay/i2c0-3b/set -m '{&quot;state&quot;: true}'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set relay to “false” state:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub \
+  mosquitto_pub -t nodes/bridge/0/relay/i2c0-3b/set -m '{&quot;state&quot;: false}'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If you want to see values from a simulator (running as parallel process inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub mosquitto_sub -v -t 'nodes/bridge/simulator/#'</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </article>
+
+    <footer>
+      Copyright © 2016
+&puncsp;
+<a href="https://www.bigclown.com/info">BigClown Labs s.&thinsp;r.&thinsp;o.</a>
+
+    </footer>
+  </body>
+</html>

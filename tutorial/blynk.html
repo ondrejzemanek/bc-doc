@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>Blynk integration</title>
+
+    <link href="/bc-doc/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="https://www.bigclown.com/">
+  <img src="/bc-doc/images/bigclown-logo.png" alt="BigClown - Open-Source Electronics" />
+</a>
+
+    </header>
+
+    <article class="main-content tutorial tutorial_blynk">
+      <h1>
+        Blynk integration
+      </h1>
+      <div id="preamble">
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install Blynk on your smartphone / tablet.
+Just use Google Play or AppStore.</p>
+</li>
+<li>
+<p>Run Blynk and select <b class="button">Create new project</b>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-create-project-1.png" alt="Blynk Home screen"></span></p>
+</div>
+</li>
+<li>
+<p>Give it a name (e.g. “bigclown demo”) and select <b class="button">Generic Board</b> as a hardware.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-create-project-2.png" alt="Screen Create New Project"></span></p>
+</div>
+</li>
+<li>
+<p>Write down your Auth Token (or let the application to send it to you by the E-mail).</p>
+</li>
+<li>
+<p>Go to your Hub.
+Stop it by <code>docker stop hub</code> and remove running image by <code>docker rm hub</code>.</p>
+</li>
+<li>
+<p>Re-run Docker with environmental variable <code>BLYNK_TOKEN</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
+  -v $HOME/hub:/var/hub -h hub-container --env BLYNK_TOKEN=da9d7ee58efabcdef123456789 \
+  --name hub clown/hub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the part <code>--env BLYNK_TOKEN=da9d7ee58efabcdef123456789</code> – you have to fill in your Blynk token you have obtained in step 3.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Do not put this part <strong>after</strong> the name! It will not work!
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Create an Menu elemet for LED.
+Set output as virtual pin V1 (see below for pin assignment).</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-menu-led-1.png" alt="Screen Menu Settings with LED element"></span></p>
+</div>
+</li>
+<li>
+<p>Create selections “on”, “off”, “1 dot”, “2 dot”, and “3 dot” as menu items.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-menu-led-2.png" alt="Screen Menu Settings with menu items for the LED element"></span></p>
+</div>
+</li>
+<li>
+<p>Create relay button on pin V19.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-button-relay.png" alt="Screen Button Settings with relay"></span></p>
+</div>
+</li>
+<li>
+<p>Create widgets for your sensors, i.e. humidity, temperature, lux-meter and barometer.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-value-humidity.png" alt="Screen Value Display Settings with humidity sensor"></span>
+<span class="image"><img src="images/blynk-value-temperature.png" alt="Screen Value Display Settings with temperature sensor"></span>
+<span class="image"><img src="images/blynk-value-lux-meter.png" alt="Screen Value Display Settings with lux meter"></span>
+<span class="image"><img src="images/blynk-value-barometer.png" alt="Screen Value Display Settings with barometer sensor"></span></p>
+</div>
+</li>
+<li>
+<p>Now you have a working Blynk dashboard.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/blynk-dashboard.png" alt="Screen with our dashboard"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pin_assignment_for_blynk">Pin assignment for Blynk</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 15.3846%;">
+<col style="width: 30.7692%;">
+<col style="width: 30.7692%;">
+<col style="width: 23.077%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Virtual PIN</th>
+<th class="tableblock halign-left valign-top">Part of topic</th>
+<th class="tableblock halign-left valign-top">Payload key</th>
+<th class="tableblock halign-left valign-top">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">led/-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">on, off, 1-dot, 2-dot, 3-dot</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-48</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">°C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-48</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">°C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-49</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">°C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-49</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">°C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c0-44</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c1-44</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c0-45</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c1-45</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c0-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pressure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kPa</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c0-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">altitude</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c1-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pressure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kPa</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c1-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">altitude</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c0-5f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relative-humidity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c1-5f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relative-humidity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">co2-sensor/i2c0-38</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">concentration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ppm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+    </article>
+
+    <footer>
+      Copyright © 2016
+&puncsp;
+<a href="https://www.bigclown.com/info">BigClown Labs s.&thinsp;r.&thinsp;o.</a>
+
+    </footer>
+  </body>
+</html>

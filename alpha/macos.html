@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>BigClown Alpha – Software Setup for macOS Host Platform</title>
+
+    <link href="/bc-doc/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="https://www.bigclown.com/">
+  <img src="/bc-doc/images/bigclown-logo.png" alt="BigClown - Open-Source Electronics" />
+</a>
+
+    </header>
+
+    <article class="main-content alpha alpha_macos">
+      <h1>
+        BigClown Alpha – Software Setup for macOS Host Platform
+      </h1>
+      <div class="sect1">
+<h2 id="_prerequisites">Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>macOS 10.10.3 Yosemite or newer</p>
+</li>
+<li>
+<p>Mac must be a 2010 or newer model, with Intel’s hardware support for memory management unit (MMU) virtualization; i.e., Extended Page Tables (EPT)</p>
+</li>
+<li>
+<p>At least 4 GiB of RAM</p>
+</li>
+<li>
+<p>VirtualBox prior to version 4.3.30 must NOT be installed (it is incompatible with Docker for Mac)</p>
+</li>
+<li>
+<p>Internet connectivity</p>
+</li>
+<li>
+<p>USB cable, Bridge Module and sensors/actuators (Tags, Modules)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_download_and_install_dockertoolbox">Download and install DockerToolbox</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download <a href="https://github.com/docker/toolbox/releases/download/v1.12.2/DockerToolbox-1.12.2.pkg">DockerToolbox-1.12.2.pkg</a>, open it and follow installation instructions (you may use Docker’s <a href="https://docs.docker.com/toolbox/toolbox_install_mac/#/step-2-install-docker-toolbox">installation manual</a>).</p>
+</li>
+<li>
+<p>Start <strong>Docker Quickstart Terminal</strong>.</p>
+</li>
+<li>
+<p>Run <code>docker-machine stop</code> and then <code>exit</code>.</p>
+</li>
+<li>
+<p>Download <a href="http://download.virtualbox.org/virtualbox/5.1.8/Oracle_VM_VirtualBox_Extension_Pack-5.1.8.vbox-extpack">VirtualBox 5.1.8 Oracle VM VirtualBox Extension Pack</a> and install it
+; copy and paste to your terminal:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">cd ~/Downloads
+wget -O VirtualBox-5.1.8.vbox-extpack http://download.virtualbox.org/virtualbox/5.1.8/Oracle_VM_VirtualBox_Extension_Pack-5.1.8.vbox-extpack
+# If checksum did not match, then do not continue!
+echo '2c1e2f5564e9ea5c704021630c87cb70a7bf38e5  VirtualBox-5.1.8.vbox-extpack' | shasum -c
+open VirtualBox-5.1.8.vbox-extpack</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_virtualbox_usb_and_network">Configure VirtualBox USB and Network</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Connect Bridge Module with USB cable.</p>
+</li>
+<li>
+<p>Start <strong>Oracle VM VirtualBox</strong>.</p>
+</li>
+<li>
+<p>Add USB config for FT260 of default virtual machine.
+<span class="image"><img src="images/vbox-usb-mac.png" alt="Screenshot of USB ports setting dialog in VirtualBox"></span></p>
+</li>
+<li>
+<p>Add Network Port Forwarding in Adapter 1 (NAT) of <strong>default</strong> virtual machine for HTTP and MQTT.
+<span class="image"><img src="images/vbox-tcp-mac.png" alt="Screenshot of Network settings dialog in VirtualBox"></span></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_docker">Configure Docker</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start <strong>Docker Quickstart Terminal</strong>.</p>
+</li>
+<li>
+<p>Disconnect Bridge Module from USB.</p>
+</li>
+<li>
+<p>Connect Bridge Module with USB cable.</p>
+</li>
+<li>
+<p>Create <em>host directory</em> for Clown.Hub:</p>
+<div class="literalblock">
+<div class="content">
+<pre>mkdir -v $HOME/hub</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_clown_hub_software_on_macos">Run Clown.Hub software on macOS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>BigClown uses Docker container technology for seamless software delivery.</p>
+</div>
+<div class="paragraph">
+<p>Pull Docker image from Docker Hub and run the container in one command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
+  -v $HOME/hub:/var/hub -h hub-container --name hub clown/hub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can stop container by:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker stop hub</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And start it again by:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker start hub</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_open_the_browser_and_play_with_the_gadgets">Open the browser and play with the gadgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navigate to URL <a href="https://hub.local:8080/dashboard" class="bare">https://hub.local:8080/dashboard</a> or <a href="https://localhost:8080/dashboard" class="bare">https://localhost:8080/dashboard</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Be aware that the connection is not encrypted, so it’s not safe to access it over public internet.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mqtt_playground">MQTT playground</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Look at measured values (this will subscribe to messages from MQTT broker running inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub mosquitto_sub -v -t 'nodes/bridge/0/#'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set relay to “true” state (this will publish message to MQTT broker running inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub \
+  mosquitto_pub -t nodes/bridge/0/relay/i2c0-3b/set -m '{&quot;state&quot;: true}'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set relay to “false” state:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub \
+  mosquitto_pub -t nodes/bridge/0/relay/i2c0-3b/set -m '{&quot;state&quot;: false}'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If you want to see values from a simulator (running as parallel process inside the container):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="sh">docker exec hub mosquitto_sub -v -t 'nodes/bridge/simulator/#'</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </article>
+
+    <footer>
+      Copyright © 2016
+&puncsp;
+<a href="https://www.bigclown.com/info">BigClown Labs s.&thinsp;r.&thinsp;o.</a>
+
+    </footer>
+  </body>
+</html>
