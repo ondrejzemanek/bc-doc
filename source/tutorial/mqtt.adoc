@@ -58,3 +58,10 @@ topic # in 0 /home/# /home_remote/#
 
 Topic command will subscribe to all topics (`topic &num;`) on remote server under `/home_remote/&num;` and will publish them on local server under `/home/#`.
 Parameter `in` describes direction and zero `0` means no QoS.
+
+=== Graphical tool mqtt-spy
+
+For diagnostic purposes, you can also use the tool with a graphical interface http://kamilfb.github.io/mqtt-spy/[mqtt-spy]
+https://github.com/eclipse/paho.mqtt-spy/wiki
+
+Then connect to your broker IP address and subscribe to the topic.
