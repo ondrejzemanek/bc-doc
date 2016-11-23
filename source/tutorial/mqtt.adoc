@@ -59,9 +59,17 @@ topic # in 0 /home/# /home_remote/#
 Topic command will subscribe to all topics (`topic &num;`) on remote server under `/home_remote/&num;` and will publish them on local server under `/home/#`.
 Parameter `in` describes direction and zero `0` means no QoS.
 
-=== Graphical tool mqtt-spy
+== GUI Tool Eclipse Paho mqtt-spy
 
-For diagnostic purposes, you can also use the tool with a graphical interface http://kamilfb.github.io/mqtt-spy/[mqtt-spy]
-https://github.com/eclipse/paho.mqtt-spy/wiki
+For debugging and diagnostic purposes, you can use a tool with graphical user interface - https://github.com/eclipse/paho.mqtt-spy[Eclipse Paho mqtt-spy].
 
-Then connect to your broker IP address and subscribe to the topic.
+NOTE: This tool needs JRE 8 to be installed on the host machine.
+
+- For more information about this tool, see: +
+  https://github.com/eclipse/paho.mqtt-spy/wiki
+- Follow this link to download the tool: +
+  https://github.com/eclipse/paho.mqtt-spy/wiki/Downloads
+
+After installation connect to your MQTT's broker IP address and subscribe to topics or start publishing messages.
+
+TIP: This tool support subscription scripts written in JavaScript. You can automate your tasks with this feature.
