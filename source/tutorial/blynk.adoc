@@ -26,6 +26,8 @@ docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
   -v $HOME/hub:/var/hub -h hub-container --env BLYNK_TOKEN=da9d7ee58efabcdef123456789 \
   --name hub clown/hub
 +
+If you are running on the Raspberry Pi, then you should use `--name hub clown/rpi-hub`
++
 Notice the part `--env BLYNK_TOKEN=da9d7ee58efabcdef123456789` – you have to fill in your Blynk token you have obtained in step 3.
 +
 WARNING: Do not put this part *after* the name! It will not work!
@@ -54,6 +56,7 @@ image:blynk-value-barometer.png[Screen Value Display Settings with barometer sen
 +
 image:blynk-dashboard.png[Screen with our dashboard]
 
+TIP: If you will contend with busy state of the virtual pin, then you should simply logout and login to the Blync app again.
 
 == Pin assignment for Blynk
 
