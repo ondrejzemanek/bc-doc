@@ -1,4 +1,5 @@
 = MQTT – Message transfer protocol
+:imagesdir: images
 
 == MQTT Basics
 
@@ -73,3 +74,5 @@ NOTE: This tool needs JRE 8 to be installed on the host machine.
 After installation connect to your MQTT's broker IP address and subscribe to topics or start publishing messages.
 
 TIP: This tool support subscription scripts written in JavaScript. You can automate your tasks with this feature.
+
+image::mqtt-spy.png[Screenshot of mqtt-spy connected to the broker]
