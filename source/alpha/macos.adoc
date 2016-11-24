@@ -1,4 +1,5 @@
 = BigClown Alpha – Software Setup for macOS Host Platform
+:page-nav-title: Software setup for macOS
 :host-mac:
 :host-name: macOS
 

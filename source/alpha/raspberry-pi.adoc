@@ -1,4 +1,5 @@
 = BigClown Alpha – Software Setup for Raspberry Pi Host Platform
+:page-nav-title: Software setup for Raspberry Pi
 :host-rpi:
 :host-name: Raspberry Pi
 :hypriot-zip: hypriotos-rpi-v1.0.0-hub.zip
