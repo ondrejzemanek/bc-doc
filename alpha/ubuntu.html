@@ -95,7 +95,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="sh">docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
-  -v $HOME/hub:/var/hub -h hub-container --name hub clown/hub</code></pre>
+  -v $HOME/hub:/var/hub -h hub-container --restart always --name hub clown/hub</code></pre>
 </div>
 </div>
 <div class="paragraph">
