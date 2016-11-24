@@ -1,0 +1,17 @@
+<% resource ||= root_page %>
+<% level ||= 1 %>
+<ul>
+  <% if resource == root_page %>
+  <li class="level0">
+    <%= link_to_page resource %>
+  </li>
+  <% end %>
+  <% for child in nested_pages(resource) %>
+  <li class="level<%= level %>">
+    <%= link_to_page child %>
+    <% unless nested_pages(child).empty? %>
+      <%= partial '_layouts/pages-tree', locals: { resource: child, level: level + 1 } %>
+    <% end %>
+  </li>
+  <% end %>
+</ul>

@@ -20,4 +20,29 @@ module MiddlemanHelpers
       </svg>
     HTML
   end
+
+  #### Navigation ####
+
+  def link_to_page(resource)
+    link_to(nav_title(resource), resource, {
+      class: ('current' if current_resource == resource)
+    })
+  end
+
+  # Returns title of the page for using in navigation.
+  def nav_title(resource)
+    resource.data['nav-title'] || resource.data.title
+  end
+
+  # Returns children pages of the given page sorted by nav-weight and title.
+  def nested_pages(resource)
+    resource.children
+      .find_all { |r| nav_title(r) }
+      .sort_by { |r| [r.data['nav-weight'] || 100, nav_title(r)] }
+  end
+
+  # Returns root page (index) of the site.
+  def root_page
+    sitemap.find_resource_by_path(config.index_file)
+  end
 end
