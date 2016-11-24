@@ -15,7 +15,7 @@ Pull Docker image from Docker Hub and run the container in one command:
 [source, subs="attributes"]
 ----
 docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
-  -v {host-hub-path}:/var/hub -h hub-container --name hub {image-name}
+  -v {host-hub-path}:/var/hub -h hub-container --restart always --name hub {image-name}
 ----
 
 You can stop container by:
