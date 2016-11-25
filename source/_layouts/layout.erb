@@ -15,16 +15,22 @@
       <%= partial '_layouts/header' %>
     </header>
 
-    <article class="main-content <%= page_classes %>">
-      <h1>
-        <%= current_page.data.title %>
-      </h1>
-      <%= yield.presence || 'This page is empty' %>
-    </article>
+    <div id="main-wrapper">
+      <div class="toolbar">
+        <%= partial '_layouts/toolbar' %>
+      </div>
 
-    <footer>
-      <%= partial '_layouts/footer' %>
-    </footer>
+      <article class="main-content <%= page_classes %>">
+        <h1>
+          <%= current_page.data.title %>
+        </h1>
+        <%= yield.presence || 'This page is empty' %>
+      </article>
+
+      <footer>
+        <%= partial '_layouts/footer' %>
+      </footer>
+    </div>
 
     <%= partial '_layouts/icons' %>
   </body>

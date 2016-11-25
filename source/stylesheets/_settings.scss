@@ -4,12 +4,19 @@ $base-font-size: 18px;
 
 @import "defaults";
 
+// Custom variables (not defined by Foundation)
+
+$padding: 1.1rem;
+$border-color: #aaa;
+$page-header-height: 3.65rem;
+
+
 // Default Overrides
 
 $primary-color: #bf0422;
 $global-radius: 4px;
-$panel-bg: #f8f8f7;
 $panel-font-color: rgba(0, 0, 0, 0.75);
+$small-font-size: 0.85em;
 
 // Headings
 
@@ -17,7 +24,7 @@ $header-font-family: $body-font-family;
 $header-font-weight: 600;
 $header-font-color: $body-font-color;
 $header-line-height: 1.2;
-$header-bottom-margin: 0.8em;
+$header-bottom-margin: 1em;
 
 $title-font-color: rgba(0, 0, 0, 0.85);
 $title-font-weight: $header-font-weight;
