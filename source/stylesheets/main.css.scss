@@ -15,6 +15,7 @@ header {
 
 #main-wrapper {
   margin-top: $page-header-height;
+  margin-left: $navbar-width;
 }
 
 .main-content {
@@ -49,6 +50,42 @@ header, footer {
   // the new web.
   height: 1.73rem;
   margin-top: -0.5rem;
+}
+
+.navbar {
+  position: fixed;
+  left: 0;
+  width: $navbar-width;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: 0.4rem;
+  background: #eee;
+  font-size: $small-font-size;
+  line-height: 1.2;
+
+  a {
+    color: $body-font-color;
+  }
+  a.current {
+    color: $primary-color;
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    padding-right: 0.2em;
+  }
+  & > ul {
+    margin-left: $padding;
+  }
+
+  li {
+    padding-top: 0.8em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .toolbar {
