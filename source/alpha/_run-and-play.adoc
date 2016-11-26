@@ -1,8 +1,8 @@
 :host-hub-path: $HOME/hub
-:image-name: clown/hub
+:image-name: bigclownlabs/hub
 ifdef::host-rpi[]
 :host-hub-path: /var/hub
-:image-name: clown/rpi-hub
+:image-name: bigclownlabs/rpi-hub
 endif::[]
 
 
