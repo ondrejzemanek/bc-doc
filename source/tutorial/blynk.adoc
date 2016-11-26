@@ -24,9 +24,9 @@ image:blynk-create-project-2.png[Screen Create New Project]
 [source]
 docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
   -v $HOME/hub:/var/hub -h hub-container --env BLYNK_TOKEN=da9d7ee58efabcdef123456789 \
-  --name hub clown/hub
+  --name hub bigclownlabs/hub
 +
-If you are running on the Raspberry Pi, then you should use `--name hub clown/rpi-hub`
+If you are running on the Raspberry Pi, then you should use `--name hub bigclownlabs/rpi-hub`
 +
 Notice the part `--env BLYNK_TOKEN=da9d7ee58efabcdef123456789` – you have to fill in your Blynk token you have obtained in step 3.
 +
