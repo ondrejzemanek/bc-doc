@@ -64,11 +64,11 @@ Stop it by <code>docker stop hub</code> and remove running image by <code>docker
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="sh">docker run -d -p 8080:8080 -p 1883:1883 --privileged -v /dev:/dev \
   -v $HOME/hub:/var/hub -h hub-container --env BLYNK_TOKEN=da9d7ee58efabcdef123456789 \
-  --name hub clown/hub</code></pre>
+  --name hub bigclownlabs/hub</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If you are running on the Raspberry Pi, then you should use <code>--name hub clown/rpi-hub</code></p>
+<p>If you are running on the Raspberry Pi, then you should use <code>--name hub bigclownlabs/rpi-hub</code></p>
 </div>
 <div class="paragraph">
 <p>Notice the part <code>--env BLYNK_TOKEN=da9d7ee58efabcdef123456789</code> – you have to fill in your Blynk token you have obtained in step 3.</p>
