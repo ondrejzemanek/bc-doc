@@ -1,5 +1,5 @@
 // Source: https://github.com/asciidoctor/asciidoctor-stylesheet-factory/blob/2ad3000fd596b4673b6576e42df448d531982502/sass/components/_asciidoc.scss
-// Note: The file has been slightly modified to get rid of Compass.
+// Note: The file has been slightly modified to get rid of Compass and some hard-coded values.
 
 // QUESTION: should we add max-width:100% and height:auto to svg?
 object, svg {
@@ -713,14 +713,14 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p {
 
     // screens below breakpoint
     padding: $pre-padding;
-    font-size: emCalc(13px);
+    font-size: $pre-font-size * 0.8;
 
     @media #{$small} {
-      font-size: emCalc(14.5px);
+      font-size: $pre-font-size * 0.9;
     }
 
     @media #{$medium} {
-      font-size: emCalc(16px);
+      font-size: $pre-font-size;
     }
   }
 }

@@ -28,7 +28,7 @@ header {
 
 .main-content {
   clear: both;
-  max-width: 760px;
+  max-width: $content-max-width;
   margin: auto;
   padding: $padding;
 }
@@ -138,7 +138,7 @@ label[for="navbar-toggle"] {
   visibility: hidden;
 }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: $navbar-width + $content-max-width * 1.25) {
   $page-header-height: $page-header-height * 0.7;
 
   header {
@@ -212,25 +212,14 @@ label[for="navbar-toggle"] {
 }
 
 
-// Hacks from https://github.com/asciidoctor/asciidoctor-stylesheet-factory/blob/master/sass/settings/_asciidoctor.scss
-
 dt, th.tableblock, td.content, div.footnote {
   // NOTE text-rendering is already set for p.
   text-rendering: optimizeLegibility;
 }
 
-// NOTE include blockquote for when it doesn't have a nested p.
-p, blockquote, dt, td.content, span.alt {
-  font-size: 1.0625rem;
-}
-
-p {
-  margin-bottom: 1.25rem;
-}
-
-// Restore font size in sidebar block and regular table cells.
+// Use smaller font size in sidebar block and regular table cells.
 .sidebarblock p, .sidebarblock dt, .sidebarblock td.content, p.tableblock {
-  font-size: 1em;
+  font-size: $small-font-size;
 }
 
 @import "print";

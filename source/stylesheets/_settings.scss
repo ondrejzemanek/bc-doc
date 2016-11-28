@@ -9,7 +9,8 @@ $base-font-size: 18px;
 $padding: 1.1rem;
 $border-color: #aaa;
 $page-header-height: 3.65rem;
-$navbar-width: 17rem;
+$navbar-width: 18rem;
+$content-max-width: 45rem;
 
 
 // Default Overrides
@@ -17,7 +18,7 @@ $navbar-width: 17rem;
 $primary-color: #bf0422;
 $global-radius: 4px;
 $panel-font-color: rgba(0, 0, 0, 0.75);
-$small-font-size: 0.85em;
+$small-font-size: 0.9em;
 
 // Headings
 
@@ -25,7 +26,8 @@ $header-font-family: $body-font-family;
 $header-font-weight: 600;
 $header-font-color: $body-font-color;
 $header-line-height: 1.2;
-$header-bottom-margin: 1em;
+$header-top-margin: 0.7em;  // FIXME this s kinda broken
+$header-bottom-margin: 0.6em;
 
 $title-font-color: rgba(0, 0, 0, 0.85);
 $title-font-weight: $header-font-weight;
@@ -45,14 +47,15 @@ $sect-divider-style: none;
 
 $h1-font-size: 2em;
 $h2-font-size: 1.75em;
-$h3-font-size: 1.52em;
-$h4-font-size: 1.32em;
-$h5-font-size: 1.15em;
+$h3-font-size: 1.48em;
+$h4-font-size: 1.28em;
+$h5-font-size: 1.12em;
 $h6-font-size: 1em;
 
 // Paragprah
 
-$paragraph-line-height: 1.5;
+$paragraph-line-height: 1.6;
+$paragraph-margin-bottom: 1em;
 
 // Inline Code
 
@@ -72,7 +75,7 @@ $code-text-rendering: optimizeSpeed;
 
 $pre-font-family: $code-font-family;
 $pre-font-color: $code-color;
-$pre-font-size: $code-font-size;
+$pre-font-size: $small-font-size;
 $pre-line-height: $code-line-height;
 $pre-bg: $code-bg-color;
 $pre-border-size: 1px;
