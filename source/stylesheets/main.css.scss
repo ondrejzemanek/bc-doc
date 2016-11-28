@@ -68,7 +68,8 @@ header, footer {
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 0.4rem;
-  background: #eee;
+  background: #f8f8f8;
+  border-right: 1px solid $border-color;
   font-size: $small-font-size;
   line-height: 1.2;
 
