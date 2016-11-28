@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # Windows does not come with time zone data
 gem 'tzinfo-data', platforms: [:mswin, :mingw, :jruby]
 
+# Natural sorting
+gem 'naturally', '~> 2.1'
+
 # CSS framework used in Asciidoctor styles
 gem 'zurb-foundation', '~> 4.3.2'
 

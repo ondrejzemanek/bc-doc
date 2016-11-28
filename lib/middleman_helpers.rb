@@ -1,3 +1,5 @@
+require 'naturally'
+
 module MiddlemanHelpers
 
   GITHUB_URL = 'https://github.com'
@@ -36,9 +38,10 @@ module MiddlemanHelpers
 
   # Returns children pages of the given page sorted by nav-weight and title.
   def nested_pages(resource)
-    resource.children
-      .find_all { |r| nav_title(r) }
-      .sort_by { |r| [r.data['nav-weight'] || 100, nav_title(r)] }
+    children = resource.children.find_all { |r| nav_title(r) }
+    Naturally.sort_by(children) do |r|
+      [r.data['nav-weight'] || 100, nav_title(r).downcase]
+    end
   end
 
   # Returns root page (index) of the site.
