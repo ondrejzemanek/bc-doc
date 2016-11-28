@@ -158,16 +158,19 @@ label[for="navbar-toggle"] {
   }
 
   label[for="navbar-toggle"] {
-    z-index: 1000;
-    visibility: visible;
     position: fixed;
-    top: 0.8em;
-    left: 0.8em;
+    top: 0;
+    left: 0;
+    height: $page-header-height;
+    width: $page-header-height;
+    padding: 0.8rem 0 0 0.8rem;
+    visibility: visible;
+    z-index: 1000;
     cursor: pointer;
   }
 
   .icon-burger {
-    @include icon-burger(1.2em, 2px, 6px);
+    @include icon-burger(1.3em, 1.1em, 4px, $body-font-color);
   }
 
   #main-wrapper {

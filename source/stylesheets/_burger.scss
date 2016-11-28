@@ -7,14 +7,15 @@
 // (---) bottom -> &::after
 
 
-@mixin icon-burger($width: 30px, $height: 5px, $gutter: 3px,
+@mixin icon-burger($width: 1em, $height: 1em, $line-width: 5px,
                    $color: black, $transition-duration: 0.3s) {
-  $burger-height: $height !global;
-  $burger-gutter: $gutter !global;
+
+  $gutter: ($height - em-calc($line-width) * 3) / 2;
+  $icon-burger-margin: em-calc($line-width) + $gutter !global;
 
   position: relative;
-  margin-top: $height + $gutter;
-  margin-bottom: $height + $gutter;
+  margin-top: $icon-burger-margin;
+  margin-bottom: $icon-burger-margin;
 
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -24,7 +25,8 @@
   &, &::before, &::after {
     display: block;
     width: $width;
-    height: $height;
+    height: $line-width;
+    border-radius: $line-width / 2;
     background-color: $color;
     transition-property: background-color, transform;
     transition-duration: $transition-duration;
@@ -36,11 +38,11 @@
   }
 
   &::before {
-    top: -($height + $gutter);
+    top: -$icon-burger-margin;
   }
 
   &::after {
-    top: $height + $gutter;
+    top: $icon-burger-margin;
   }
 }
 
@@ -50,13 +52,13 @@
     background-color: transparent;
   }
   &::before {
-    -webkit-transform: translateY($burger-gutter + $burger-height) rotate(45deg);
-        -ms-transform: translateY($burger-gutter + $burger-height) rotate(45deg);
-            transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+    -webkit-transform: translateY($icon-burger-margin) rotate(45deg);
+        -ms-transform: translateY($icon-burger-margin) rotate(45deg);
+            transform: translateY($icon-burger-margin) rotate(45deg);
   }
   &::after {
-    -webkit-transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
-        -ms-transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
-            transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+    -webkit-transform: translateY(-$icon-burger-margin) rotate(-45deg);
+        -ms-transform: translateY(-$icon-burger-margin) rotate(-45deg);
+            transform: translateY(-$icon-burger-margin) rotate(-45deg);
   }
 }
