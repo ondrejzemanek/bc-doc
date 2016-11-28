@@ -1,0 +1,62 @@
+// Based on: https://github.com/jorenvanhee/sass-burger
+
+// Burger parts
+//
+// (---) top    -> &::before
+// [---] middle -> &
+// (---) bottom -> &::after
+
+
+@mixin icon-burger($width: 30px, $height: 5px, $gutter: 3px,
+                   $color: black, $transition-duration: 0.3s) {
+  $burger-height: $height !global;
+  $burger-gutter: $gutter !global;
+
+  position: relative;
+  margin-top: $height + $gutter;
+  margin-bottom: $height + $gutter;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+
+  &, &::before, &::after {
+    display: block;
+    width: $width;
+    height: $height;
+    background-color: $color;
+    transition-property: background-color, transform;
+    transition-duration: $transition-duration;
+  }
+
+  &::before, &::after {
+    position: absolute;
+    content: "";
+  }
+
+  &::before {
+    top: -($height + $gutter);
+  }
+
+  &::after {
+    top: $height + $gutter;
+  }
+}
+
+// Burger animations
+@mixin icon-burger-cross {
+  & {
+    background-color: transparent;
+  }
+  &::before {
+    -webkit-transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+        -ms-transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+            transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+  }
+  &::after {
+    -webkit-transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+        -ms-transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+            transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+  }
+}

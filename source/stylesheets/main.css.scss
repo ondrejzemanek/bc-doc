@@ -1,10 +1,15 @@
 @import "settings";
 @import "asciidoc";
+@import "burger";
+
+body {
+  overflow-x: hidden;
+}
 
 header {
   position: fixed;
   top: 0;
-  z-index: 10;
+  z-index: 500;
   width: 100%;
   height: $page-header-height;
   line-height: $page-header-height;
@@ -14,8 +19,11 @@ header {
 }
 
 #main-wrapper {
+  min-height: 100vh;
   margin-top: $page-header-height;
   margin-left: $navbar-width;
+  overflow-x: auto;
+  background: white;
 }
 
 .main-content {
@@ -114,6 +122,90 @@ header, footer {
   stroke-width: 0;
   stroke: currentColor;
   fill: currentColor;
+}
+
+
+// Styles for small screen
+
+// Hide the checkbox, but keep it accessible.
+#navbar-toggle {
+  position: absolute;
+  top: -99px;
+  left: -99px;
+}
+
+label[for="navbar-toggle"] {
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 1100px) {
+  $page-header-height: $page-header-height * 0.7;
+
+  header {
+    height: $page-header-height;
+    line-height: $page-header-height;
+    text-align: center;
+  }
+
+  .header-logo {
+    height: $page-header-height * 0.6;
+  }
+
+  .navbar {
+    width: 90%;
+    max-width: $navbar-width;
+    z-index: -100;
+  }
+
+  label[for="navbar-toggle"] {
+    z-index: 1000;
+    visibility: visible;
+    position: fixed;
+    top: 0.8em;
+    left: 0.8em;
+    cursor: pointer;
+  }
+
+  .icon-burger {
+    @include icon-burger(1.2em, 2px, 6px);
+  }
+
+  #main-wrapper {
+    margin-top: $page-header-height;
+    margin-left: 0;
+    transition: transform 250ms ease;
+  }
+
+  // When the checkbox is checked (i.e. user click/tap on the label)...
+  #navbar-toggle:checked {
+
+    // Slide the #main-wrapper over.
+    // NOTE: translateZ and scale is used as a hack to get smoother animation;
+    // it forces browser to render the animation on GPU.
+    & ~ #main-wrapper {
+      // Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4
+      -webkit-transform: translateZ(0) translateX($navbar-width) scale(1);
+              transform: translateZ(0) translateX($navbar-width) scale(1);
+    }
+
+    // Change z-index of the navbar to be over the #main-wrapper. This is
+    // fallback for old browsers that don't support transform and transition.
+    //
+    // NOTE: It'd be more straightforward to just translate some position
+    // property of #main-wrapper instead of using translateX, but that would
+    // provide worse performance. This approach is better.
+    & ~ .navbar {
+      // Delay change of z-index until transition of the #main-wrapper is
+      // finished (to not disrupt the transition effect on modern browsers).
+      transition: z-index 300ms step-end;
+      z-index: 100;
+    }
+
+    // Transform the hamburger icon into a cross.
+    & ~ label[for="navbar-toggle"] > .icon-burger {
+      @include icon-burger-cross;
+    }
+  }
 }
 
 
