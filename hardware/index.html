@@ -12,34 +12,85 @@
 
   <body>
     <header>
-      <a class="logo" href="https://www.bigclown.com/">
-  <img src="/images/bigclown-logo.png" alt="BigClown - Open-Source Electronics" width="400" height="156" />
-</a>
-<div class="top-bar">
-  <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/hardware/index.adoc" rel="external" title="Edit on GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon">
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/hardware/index.adoc" rel="external" title="Edit on GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon">
         <use xlink:href="#icon-pencil" />
       </svg>
 
-    <span class="icon-label">Improve this page</span>
-  </a>
+        <span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
 </div>
 
-    </header>
 
-    <article class="main-content hardware hardware_index">
-      <h1>
-        
-      </h1>
-      This page is empty
-    </article>
+      <article class="main-content hardware hardware_index">
+        <h1>
+          
+        </h1>
+        This page is empty
+      </article>
 
-    <footer>
-      Copyright © 2016
-&puncsp;
-<a href="https://www.bigclown.com/info">BigClown Labs s.&thinsp;r.&thinsp;o.</a>
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
 
-    </footer>
+    </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      version="1.1"
