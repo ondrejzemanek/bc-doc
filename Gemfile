@@ -17,7 +17,7 @@ gem 'middleman-asciidoc'
 # This fork just removes platform-specific dependencies from gemspec.
 # See https://github.com/guard/listen/issues/416
 # Required by middleman-core: listen ~> 3.0.0
-gem 'listen', git: 'https://github.com/jirutka/listen.git', tag: 'v3.0.8-nodep'
+gem 'listen', git: 'https://github.com/jirutka/listen.git', tag: 'v3.0.8-nodep-r1'
 
 # Gems for live reload etc.
 group :development do

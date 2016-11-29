@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/jirutka/listen.git
-  revision: c88ef3be3749a17a18875533442a611bd42dae4f
-  tag: v3.0.8-nodep
+  revision: 6c0bea9ef84cf230df698cfa9d198b9fa7b62af8
+  tag: v3.0.8-nodep-r1
   specs:
     listen (3.0.8)
 
