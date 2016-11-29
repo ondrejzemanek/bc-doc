@@ -11,23 +11,12 @@
   </head>
 
   <body>
-    <header>
-      <%= partial '_layouts/header' %>
-    </header>
+    <%= partial '_layouts/header' %>
 
-    <input type="checkbox" id="navbar-toggle" role="button" />
-    <label for="navbar-toggle">
-      <span class="icon-burger"></span>
-    </label>
-
-    <nav class="navbar">
-      <%= partial '_layouts/pages-tree' %>
-    </nav>
+    <%= partial '_layouts/navbar' %>
 
     <div id="main-wrapper">
-      <div class="toolbar">
-        <%= partial '_layouts/toolbar' %>
-      </div>
+      <%= partial '_layouts/toolbar' %>
 
       <article class="main-content <%= page_classes %>">
         <h1>
@@ -36,9 +25,7 @@
         <%= yield.presence || 'This page is empty' %>
       </article>
 
-      <footer>
-        <%= partial '_layouts/footer' %>
-      </footer>
+      <%= partial '_layouts/footer' %>
     </div>
 
     <%= partial '_layouts/icons' %>
