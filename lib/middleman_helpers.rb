@@ -16,11 +16,9 @@ module MiddlemanHelpers
 
   # Returns SVG code to use beforehand declared SVG symbol.
   def use_icon(icon_id)
-    <<-HTML
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon">
-        <use xlink:href="#icon-#{icon_id}" />
-      </svg>
-    HTML
+    content_tag :svg, xmlns: 'http://www.w3.org/2000/svg', class: 'icon' do
+      tag :use, 'xlink:href' => "#icon-#{icon_id}"
+    end
   end
 
   #### Navigation ####
