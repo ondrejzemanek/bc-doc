@@ -493,27 +493,23 @@ b.button:after {
   & > a.anchor {
     position: absolute;
     z-index: 1001;
-    // 1ex is the width of "x"
-    width: 1.5ex;
-    margin-left: -1.5ex;
+    width: 1.2em;
+    margin-left: -1.2em;
     display: block;
     text-decoration: none !important;
-    visibility: hidden;
+    color: transparent;
     text-align: center;
     font-weight: normal;
 
     &:before {
-      content: "\00A7";
-      font-size: 0.85em;
+      content: "#";
       display: block;
-      // padding-top highly dependent on font
-      padding-top: 0.1em;
     }
   }
 
   &:hover > a.anchor,
   & > a.anchor:hover {
-    visibility: visible;
+    color: $anchor-font-color;
   }
 
   & > a.link {

@@ -18,6 +18,7 @@ activate :asciidoc, attributes: {
   'source-language' => 'sh',
   'source-highlighter' => 'coderay',
   'coderay-css' => 'style',
+  'sectanchors' => 'true',
 }
 
 # Automatically add width and heigh attributes (detected by fastimage gem) to
