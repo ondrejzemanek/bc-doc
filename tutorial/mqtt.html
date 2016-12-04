@@ -68,11 +68,7 @@
   <ul class="toolbar-actions">
     <li>
       <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/tutorial/mqtt.adoc" rel="external" title="Edit on GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon">
-        <use xlink:href="#icon-pencil" />
-      </svg>
-
-        <span class="icon-label">Improve this page</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
       </a>
     </li>
   </ul>
@@ -84,7 +80,7 @@
           MQTT – Message transfer protocol
         </h1>
         <div class="sect1">
-<h2 id="_mqtt_basics">MQTT Basics</h2>
+<h2 id="_mqtt_basics"><a class="anchor" href="#_mqtt_basics"></a>MQTT Basics</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -112,7 +108,7 @@ Symbol <code>&num;</code> can be used only at the end of subscribed topic.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mosquitto_mqtt_broker">Mosquitto MQTT broker</h2>
+<h2 id="_mosquitto_mqtt_broker"><a class="anchor" href="#_mosquitto_mqtt_broker"></a>Mosquitto MQTT broker</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>BigClown uses open-source <a href="https://mosquitto.org/">Mosquitto</a> broker which is running inside Docker.</p>
@@ -139,13 +135,13 @@ Symbol <code>&num;</code> can be used only at the end of subscribed topic.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mosquitto_configuration">Mosquitto configuration</h2>
+<h2 id="_mosquitto_configuration"><a class="anchor" href="#_mosquitto_configuration"></a>Mosquitto configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can edit Mosquitto settings in the configuration file which is located in <code>/etc/mosquitto/mosquitto.conf</code> inside the Docker.</p>
 </div>
 <div class="sect2">
-<h3 id="_mqtt_bridge">MQTT Bridge</h3>
+<h3 id="_mqtt_bridge"><a class="anchor" href="#_mqtt_bridge"></a>MQTT Bridge</h3>
 <div class="paragraph">
 <p>Bridging two MQTT servers together is useful for example when you have your local MQTT server behind NAT and you would like to publish messages from the outside/Internet.
 You have to create public MQTT server (for example on AWS server) which you bridge with your home MQTT server.
@@ -174,7 +170,7 @@ Parameter <code>in</code> describes direction and zero <code>0</code> means no Q
 </div>
 </div>
 <div class="sect1">
-<h2 id="_gui_tool_eclipse_paho_mqtt_spy">GUI Tool Eclipse Paho mqtt-spy</h2>
+<h2 id="_gui_tool_eclipse_paho_mqtt_spy"><a class="anchor" href="#_gui_tool_eclipse_paho_mqtt_spy"></a>GUI Tool Eclipse Paho mqtt-spy</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For debugging and diagnostic purposes, you can use a tool with graphical user interface - <a href="https://github.com/eclipse/paho.mqtt-spy">Eclipse Paho mqtt-spy</a>.</p>
