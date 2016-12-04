@@ -20,7 +20,7 @@ header {
 
 #main-wrapper {
   min-height: 100vh;
-  margin-top: $page-header-height;
+  padding-top: $page-header-height;
   margin-left: $navbar-width;
   overflow-x: auto;
   background: white;
@@ -62,12 +62,13 @@ header, footer {
 
 .navbar {
   position: fixed;
+  top: 0;
   left: 0;
   width: $navbar-width;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-top: 0.4rem;
+  padding-top: $page-header-height + 0.4rem;
   background: #f8f8f8;
   border-right: 1px solid $border-color;
   font-size: $small-font-size;
@@ -155,6 +156,7 @@ label[for="navbar-toggle"] {
   }
 
   .navbar {
+    padding-top: $page-header-height + 0.4rem;
     width: 90%;
     max-width: $navbar-width;
     z-index: -100;
@@ -177,7 +179,7 @@ label[for="navbar-toggle"] {
   }
 
   #main-wrapper {
-    margin-top: $page-header-height;
+    padding-top: $page-header-height;
     margin-left: 0;
     transition: transform 250ms ease;
   }
