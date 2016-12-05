@@ -21,7 +21,7 @@ BigClown uses open-source https://mosquitto.org/[Mosquitto] broker which is runn
 To test MQTT and see the sent messages you can subscribe to topic with:
 
 [source]
-docker exec hub mosquitto_sub -v -t 'nodes/bridge/0/#'
+docker exec hub mosquitto_sub -v -t 'nodes/bridge/0/&num;'
 
 If you would like to connect from outside of the docker or from different machine, you can remove the `docker exec hub` and add `-h <ip/host>` parameter of the address of running broker.
 
@@ -38,27 +38,31 @@ You can edit Mosquitto settings in the configuration file which is located in `/
 
 === MQTT Bridge
 
-Bridging two MQTT servers together is useful for example when you have your local MQTT server behind NAT and you would like to publish messages from the outside/Internet.
-You have to create public MQTT server (for example on AWS server) which you bridge with your home MQTT server.
-In this use case your local server will connect to your public server in AWS.
-So you have to configure your local server with commands below.
+Bridging two MQTT servers together is useful for example when you would like interconnect MQTT broker inside Docker container with MQTT broker in Raspbian.
+
+You have to install MQTT broker (for example same Mosquitto can be used) which you bridge with your Clown.Hub MQTT broker.
+In this use case your Clown.Hub MQTT broker will connect to your MQTT broker in Raspbian.
+So you have to configure your Cown.Hub MQTT broker with commands below.
 
 [source]
 ----
-# Bridge to AWS
-connection aws
-address your.server.com
+# Bridge to host (Raspbian) MQTT broker
+connection RaspbianMQTT
+# Default IP address of Docker host network interface
+address 172.17.0.1
 
-# Optional password, you should also use TLS to protect credentials
-remote_username root
-remote_password root
+# Optional authorization for Raspbian MQTT broker
+remote_username clownhub
+remote_password clownhub
 
 #topic <topic> [[[out | in | both] qos-level] local-prefix remote-prefix]
 topic # in 0 /home/# /home_remote/#
 ----
 
-Topic command will subscribe to all topics (`topic &num;`) on remote server under `/home_remote/&num;` and will publish them on local server under `/home/#`.
-Parameter `in` describes direction and zero `0` means no QoS.
+Topic command will subscribe to all topics (`topic &num;`) on Raspbian MQTT broker under `/home_remote/&num;` and will publish them on Clown.Hub MQTT broker under `/home/&num;`.
+Parameter `in` describes direction and zero `0` means MQTT QoS 0.
+
+WARNING: Do not interconnect Clown.Hub Docker container MQTT broker with outside/Internet MQTT brokers without extra integrity, authentication, authorization & privacy configuration for transport and destination environment (TLS, certificates, firewalls, etc.).
 
 == GUI Tool Eclipse Paho mqtt-spy
 
