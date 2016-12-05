@@ -492,7 +492,6 @@ b.button:after {
 #content #{headers()} {
   & > a.anchor {
     position: absolute;
-    z-index: 1001;
     width: 1.2em;
     margin-left: -1.2em;
     display: block;
