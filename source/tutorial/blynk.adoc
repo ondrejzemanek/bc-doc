@@ -3,6 +3,8 @@
 // enable btn:[] macro
 :experimental:
 
+This tutorial will show you how to connect to BigClown.Hub remotely from your smartphone.
+
 . Install Blynk on your smartphone / tablet.
   Just use Google Play or AppStore.
 
