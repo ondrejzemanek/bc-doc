@@ -1,9 +1,9 @@
-= MQTT – Message transfer protocol
+= Mosquitto – MQTT Broker
 :imagesdir: images
 
 == MQTT Basics
 
-- Simple, Lightweight and open message protocol.
+- Simple, light-weight and open message protocol.
 - Each message consists of *topic* and *payload*.
 - Topic is describing the meaning of the data in payload.
   Topic uses tree-like structure with `/` symbol.
@@ -59,6 +59,7 @@ topic # in 0 /home/# /home_remote/#
 
 Topic command will subscribe to all topics (`topic &num;`) on remote server under `/home_remote/&num;` and will publish them on local server under `/home/#`.
 Parameter `in` describes direction and zero `0` means no QoS.
+
 
 == GUI Tool Eclipse Paho mqtt-spy
 

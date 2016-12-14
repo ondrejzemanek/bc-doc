@@ -1,4 +1,4 @@
-= WebSocket Protocol
+= WebSocket - Real-time Protocol
 
 Web programmers who have done more than just work with content management systems are certainly familiar with the principle of web sockets.
 Basically it is a communication link established between two processes using IP technology.
@@ -17,7 +17,7 @@ WebSocket has direct support for UTF-8 and follows the CORS security model as we
 
 == Using WebSocket
 
-https://html.spec.whatwg.org/multipage/comms.html#network[WebSockets] offer a very simple interface to establish connections for the bi-directional exchange of messages between client and server.
+https://html.spec.whatwg.org/multipage/comms.html#network[WebSocket] offer a very simple interface to establish connections for the bi-directional exchange of messages between client and server.
 On the client side (most often in the browser) the WebSocket class is available.
 You can create instances of this class, and thus establish a connection with the server (provided, of course, that the server supports this technology).
 
@@ -73,7 +73,7 @@ myWebSocket.send("Hello server!");
 When done running the application, it is possible to close the connection by using method `close()`.
 
 The server side requires more than just a regular HTTP server – a server that supports WebSocket technology is needed.
-One possibility is to use special services, e.g. a Kaazing or Jetty server, or possibly a local WebSockets node.
+One possibility is to use special services, e.g. a Kaazing or Jetty server, or possibly a local WebSocket node.
 There is also https://github.com/google/pywebsocket[pywebsocket], an implementation written in Python that functions as a stand-alone server, but that can also work with an Apache server (mod_pywebsocket).
 Here at BigClown, we decided to use an https://nginx.org[nginx HTTP server], which in addition to other functions also offers direct ws/wss integration.
 

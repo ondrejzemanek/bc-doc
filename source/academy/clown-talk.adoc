@@ -1,4 +1,4 @@
-= Clown.Talk and Clown.Model
+= Clown.Talk & Clown.Model
 
 The BigClown system is based on the exchange of messages using MQTT technology (see corresponding article link:mqtt.html[here]).
 However, there are places in the system where MQTT cannot be used directly - for example, web browsers do not yet use it.

@@ -1,4 +1,4 @@
-= Blynk integration
+= Blynk - Mobile App Builder
 :imagesdir: images
 // enable btn:[] macro
 :experimental:
