@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>IFTTT - If This Then That</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/clown-talk.html">Clown.Talk and Clown.Model</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/i2c.html">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html">MQTT Messaging</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/websocket.html">WebSocket Protocol</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/ifttt.html" class="current">IFTTT - If This Then That</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/node-red.html">Node RED - Visual Tool for IoT</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/tutorial/ifttt.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content tutorial tutorial_ifttt">
+        <h1>
+          IFTTT - If This Then That
+        </h1>
+        <div class="sect1">
+<h2 id="_what_is_ifttt"><a class="anchor" href="#_what_is_ifttt"></a>What is IFTTT?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>IFTTT</strong> or “If This Then That” is a free web-based service that aggregates many other web apps into one place and can then perform actions given a certain set of criteria.</p>
+</div>
+<div class="paragraph">
+<p>IFTTT is made to create <strong>recipes</strong>&#8201;&#8212;&#8201;If something happens in one service <strong>This</strong> (<strong>Trigger</strong>), Then something should Happen in another service <strong>That</strong> (<strong>Action</strong>).
+This whole chain is called <strong>Applet</strong>.</p>
+</div>
+<div class="paragraph">
+<p>As a trigger service can be used <strong>Maker service</strong> that allows you to communicate with IFTTT through a <strong>Web request</strong> (<strong>POST</strong>).</p>
+</div>
+<div class="paragraph">
+<p>The Maker service is useful for BigClown Hub integration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_create_a_new_applet"><a class="anchor" href="#_how_to_create_a_new_applet"></a>How to create a new Applet?</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The first step is to create your account on <a href="https://ifttt.com/"><strong>IFTTT</strong></a>.</p>
+</li>
+<li>
+<p>After login, click on your username in the top-right corner and open menu, then Select <strong>"New Applet"</strong>.</p>
+</li>
+<li>
+<p>This opens a page with "if <strong>this</strong> Then That.". First select the trigger service <strong>"this"</strong>.</p>
+</li>
+<li>
+<p>From the list of all services, select trigger <strong>Maker service</strong>.</p>
+</li>
+<li>
+<p>Connect to the Maker channel and select option <strong>"Receive a web request"</strong>.</p>
+</li>
+<li>
+<p>Fill the <strong>event name</strong> and select <strong>"Create Trigger"</strong>.</p>
+</li>
+<li>
+<p>The last step brings you back to the page "Then if this <strong>That</strong>".
+But this time set <strong>action „that“</strong>.</p>
+</li>
+<li>
+<p>Choose action service that you want to affected by trigger service and follow the service instructions.</p>
+</li>
+<li>
+<p>Finally click on <strong>"Create action"</strong> and you are done!</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_send_data_to_ifttt_using_maker_service"><a class="anchor" href="#_how_to_send_data_to_ifttt_using_maker_service"></a>How to send data to IFTTT using Maker service?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you create an account on the Service Maker, maker generates a unique key that allows you to communicate with IFTTT.</p>
+</div>
+<div class="paragraph">
+<p>This key can be found in the Maker channel settings.</p>
+</div>
+<div class="paragraph">
+<p>For information about Maker channel follow these instructions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Search for <strong>Maker</strong> service. (On the top bar of IFTTT page, click on <strong>"Search"</strong>.)</p>
+</li>
+<li>
+<p>On the "About" page click on <strong>"Settings"</strong> (in the top-right corner).</p>
+</li>
+<li>
+<p>Last step brings you to settings page for Maker channel.
+Here you will need <strong>URL</strong> that contains the unique Maker key.</p>
+</li>
+<li>
+<p>Click on <strong>URL</strong>, that will bring you to how-to page.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>According to these instructions, you can build a final address where you can send data.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>final address</strong> will look like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>https://maker.ifttt.com/trigger/{event}/with/key/{key}</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>{event}</code> - Step 6 in the instructions "How to create an new applet?".</p>
+</li>
+<li>
+<p><code>{key}</code> – your Maker unique key</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Data is sent using the <strong>POST</strong> method in the <strong>JSON</strong> format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{<span style="color:#606"><span style="color:#404">&quot;</span><span>value1</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">your_first_value</span><span style="color:#710">&quot;</span></span>, <span style="color:#606"><span style="color:#404">&quot;</span><span>value2</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">your_second_value</span><span style="color:#710">&quot;</span></span>, <span style="color:#606"><span style="color:#404">&quot;</span><span>value3</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">your_third_value</span><span style="color:#710">&quot;</span></span>}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can send up to <strong>3 values</strong> in one request.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example"><a class="anchor" href="#_example"></a>Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A simple <strong>Python 3</strong> example for BigClown Hub has been provided to test IFTTT service.
+You can find it in the following GitHub repository: <a href="https://github.com/bigclownlabs/bc-ifttt"><strong>BigClown IFTTT Service Integration Example</strong></a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_usage"><a class="anchor" href="#_usage"></a>Usage</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set your <code>event</code> name and Maker <code>key</code> in <strong>_url</strong> variable in <strong>IFTTTWorker</strong> class.</p>
+</li>
+<li>
+<p>If you want, you can modify constants for temperature thresholds and hysteresis:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="python">TEMPERATURE_TRESHOLD_HIGH = {top threshold temperature}
+TEMPERATURE_TRESHOLD_LOW = {bottom threshold temperature}
+TEMPERATURE_ALARM_HYSTERESIS = {temperature hysteresis}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run it.</p>
+<div class="literalblock">
+<div class="content">
+<pre>python3 ifttt-bigclown.py</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>
