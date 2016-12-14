@@ -177,16 +177,16 @@ The following table gives a summary of all the devices available in Bridge proje
 |thermometer/i2c1-49
 |
 
-|luxmeter/i2c0-44
+|lux-meter/i2c0-44
 |illuminance
 
-|luxmeter/i2c1-44
+|lux-meter/i2c1-44
 |
 
-|luxmeter/i2c0-45
+|lux-meter/i2c0-45
 |
 
-|luxmeter/i2c1-45
+|lux-meter/i2c1-45
 |
 
 |barometer/i2c0-60
@@ -195,10 +195,16 @@ The following table gives a summary of all the devices available in Bridge proje
 |barometer/i2c1-60
 |
 
-|humidity-sensor/i2c0-5f
-|relative-humidity, temperature
+|humidity-sensor/i2c0-40
+|relative-humidity
 
-|humidity-sensor/i2c1-5f
+|humidity-sensor/i2c0-41
+|
+
+|humidity-sensor/i2c1-40
+|
+
+|humidity-sensor/i2c1-41
 |
 
 |co2-sensor/i2c0-38
