@@ -1,4 +1,5 @@
-= Mosquitto – MQTT Broker
+= Mosquitto - MQTT Broker
+
 :imagesdir: images
 
 == MQTT Basics
