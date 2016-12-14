@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>Node RED - Visual Tool for IoT</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/clown-talk.html">Clown.Talk and Clown.Model</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/i2c.html">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html">MQTT Messaging</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/websocket.html">WebSocket Protocol</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/node-red.html" class="current">Node RED - Visual Tool for IoT</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/tutorial/node-red.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content tutorial tutorial_node-red">
+        <h1>
+          Node RED - Visual Tool for IoT
+        </h1>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>To better process data moving through the system we can use the <a href="http://nodered.org">Node-RED</a> tool.
+As indicated by the name, this is an application built on <a href="https://nodejs.org">Node.js</a> technology.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You must first install Node.js if you do not already have it in your system.
+Node.js can be run on Windows, Linux or macOS systems.
+Follow the instructions on the <a href="https://nodejs.org">Node.js website</a>.</p>
+</div>
+<div class="paragraph">
+<p>After installing Node.js, make sure it has been installed properly and that it is functional.
+Open the console (command line) and enter:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>node --version
+npm --version</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both commmands should list the installed version.
+To run Node-RED you need at least version 0.10.x, at the time of writing this article it is 6.9.1, and npm of at least version 2.x.</p>
+</div>
+<div class="paragraph">
+<p>Launch installation of Node-RED with the command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo npm install -g --unsafe-perm node-red</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command will install Node-RED as a globally executable tool.</p>
+</div>
+<div class="paragraph">
+<p>To launch Node-RED, just use the command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>node-red</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After launching you can open the Node-RED editor at <a href="http://localhost:1880" class="bare">http://localhost:1880</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_on_raspberry_pi"><a class="anchor" href="#_installation_on_raspberry_pi"></a>Installation on Raspberry Pi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Node-RED can also be installed on Raspberry Pi.
+If you use Raspberry Pi as a platform to run the Hub, you can install Node-RED on it.
+The following procedure has been tested with Raspbian Jessie Lite.</p>
+</div>
+<div class="paragraph">
+<p>First we prepare the source and repository:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we install Node.js:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo apt install -y nodejs</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And finally Node-RED itself:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo npm install -g --unsafe-perm node-red</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Raspberry Pi has limited operating memory, that is why Node-RED must be run using the max-old-space-size parameter, which limits the maximum amount of memory used:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>node-red-pi --max-old-space-size=128</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want Node-RED to run after every system start, you can prepare a start up script using the following commands:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/nodered.service -O /lib/systemd/system/nodered.service</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/node-red-start -O /usr/bin/node-red-start</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/node-red-stop -O /usr/bin/node-red-stop</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo chmod +x /usr/bin/node-red-st*</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo systemctl daemon-reload</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then enable autostart with this command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sudo systemctl enable nodered.service</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_steps"><a class="anchor" href="#_first_steps"></a>First steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Node-RED runs as a web application at <a href="http://localhost:1880" class="bare">http://localhost:1880</a> (if you are running it on another computer, or on Raspberry, then of course you will not use the localhost, but the address of the remote computer).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-01.png" alt="node red 01">
+</div>
+</div>
+<div class="paragraph">
+<p>Node-RED connects the source of messages and outputs using data lines (pipes), making it possible to define basic operations that can be performed with messages.
+This makes it easier to form and operate a system for data collection or automation.
+The basic unit for automation is Flow (data flow diagram).</p>
+</div>
+<div class="paragraph">
+<p>For a source, we might use MQTT, websocket, TCP or UDP socket, a serial port, or maybe even a user button or other Flow, we can read messages from a file, we can monitor GPIO on Raspberry Pi, or our source of messages and events could even be e-mail or Twitter.
+Wait!
+Relay switching via Twitter?
+Why not!</p>
+</div>
+<div class="paragraph">
+<p>Outputs have roughly the same options as inputs.
+Instead of user source data we can use the "debug" console.</p>
+</div>
+<div class="paragraph">
+<p>We can process data or events, using special functions (written in JavaScript), or we can use pre-set tools like delay (which delays further transmission of the message by a certain amount of time), trigger (a message can trigger another message to be sent after a certain period of time - useful for timers and switches), or split and join, which is able to combine multiple messages into a single message according to defined rules, or conversely, split a complex message into multiple messages.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example"><a class="anchor" href="#_example"></a>Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let’s take a look at a simple automation script to switch a relay depending on lighting intensity.
+For this we will use the Lux Meter Tag and Relay Module.</p>
+</div>
+<div class="paragraph">
+<p>First we will define the MQTT source.
+Drag and drop into an empty MQTT Input and define its MQTT source.
+In our case it will be localhost:1883 (MQTT in Clown.Hub).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-02.png" alt="node red 02">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-03.png" alt="node red 03">
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly we define the relay output - we use MQTT Output, we change the Topic but the Server remains the same:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-04.png" alt="node red 04">
+</div>
+</div>
+<div class="paragraph">
+<p>To see how data is flowing, for the time being we can add a debugging output to the Flow.
+This does not have to be set in any way.
+Once added, we create the first data link - drag and drop from the Lux-meter source to the "msg.payload" output (use the small round dots to the left and right).
+As soon as you have created the link, click on the large red Deploy button upper right.</p>
+</div>
+<div class="paragraph">
+<p>In the console on the right we can monitor data flow:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-05.png" alt="node red 05">
+</div>
+</div>
+<div class="paragraph">
+<p>We want the relay to connect at any time when the lighting level exceeds 50 lux.
+Now we will add the Function module to the diagram.
+This will convert the message from the lux meter in the form <code>{"illuminance": [51.28, "lux"]}</code> into a message that will switch the relay: <code>{"state": true|false}</code>.</p>
+</div>
+<div class="paragraph">
+<p>In the function we first convert msg.payload to an object (using <code>JSON.parse</code>), we extract a numeric value, based upon which we create a command that is converted to a JSON string and placed back into <code>msg.payload</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-06.png" alt="node red 06">
+</div>
+</div>
+<div class="paragraph">
+<p>We connect the input with the Lux-meter, the output with the Relay, and the entire Flow is started with Deploy:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/node-red/node-red-07.png" alt="node red 07">
+</div>
+</div>
+<div class="paragraph">
+<p>The relay is switched on depending on changing light levels measured by the lux meter.</p>
+</div>
+<div class="paragraph">
+<p>You have now successfully created your first automated script.
+Node-RED makes the creation of such automation much easier.</p>
+</div>
+<div class="paragraph">
+<p>Don’t forget: after trying it out set the name and password for Node-RED according to the <a href="http://nodered.org/docs/security">instructions on the website</a>.</p>
+</div>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>
