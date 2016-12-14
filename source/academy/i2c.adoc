@@ -1,4 +1,4 @@
-= Communication Interface I^2^C
+= I^2^C Communication Interface
 :imagesdir: images
 
 In the world of the internet we encounter many abbreviations and names for technology that can be confusing for a novice.
