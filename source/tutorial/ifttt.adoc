@@ -8,7 +8,7 @@
 IFTTT is made to create *recipes* -- If something happens in one service *This* (*Trigger*), Then something should Happen in another service *That* (*Action*).
 This whole chain is called *Applet*.
 
-As a trigger service can be used *Maker service* that allows you to communicate with IFTTT through a *Web request* (*POST*).
+As a trigger service can be used *Maker* service that allows you to communicate with IFTTT through a *Web request* (*POST*).
 
 The Maker service is useful for BigClown Hub integration.
 
@@ -17,8 +17,8 @@ The Maker service is useful for BigClown Hub integration.
 
 . The first step is to create your account on https://ifttt.com/[*IFTTT*].
 . After login, click on your username in the top-right corner and open menu, then Select *"New Applet"*.
-. This opens a page with "if *this* Then That.". First select the trigger service *"this"*.
-. From the list of all services, select trigger *Maker service*.
+. This opens a page with "if *this* Then That". First select the trigger service *"this"*.
+. From the list of all services, select trigger *Maker* service.
 . Connect to the Maker channel and select option *"Receive a web request"*.
 . Fill the *event name* and select *"Create Trigger"*.
 . The last step brings you back to the page "Then if this *That*".
@@ -29,15 +29,15 @@ The Maker service is useful for BigClown Hub integration.
 
 == How to send data to IFTTT using Maker service?
 
-When you create an account on the Service Maker, maker generates a unique key that allows you to communicate with IFTTT.
+When you create an account on the *Maker* service, maker generates a unique key that allows you to communicate with IFTTT.
 
-This key can be found in the Maker channel settings.
+This key can be found in the Maker settings.
 
-For information about Maker channel follow these instructions:
+For information about Maker service follow these instructions:
 
 . Search for *Maker* service. (On the top bar of IFTTT page, click on *"Search"*.)
 . On the "About" page click on *"Settings"* (in the top-right corner).
-. Last step brings you to settings page for Maker channel.
+. Last step brings you to settings page for Maker service.
   Here you will need *URL* that contains the unique Maker key.
 . Click on *URL*, that will bring you to how-to page.
 
