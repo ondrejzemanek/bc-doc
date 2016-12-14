@@ -1,0 +1,454 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>MQTT Messaging</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/i2c.html">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html" class="current">MQTT Messaging</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/academy/mqtt.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content academy academy_mqtt">
+        <h1>
+          MQTT Messaging
+        </h1>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>MQTT (formerly: Message Queuing Telemetry Transport, today MQTT) is a simple and lightweight protocol for transmitting messages between clients through a central point/broker.
+Thanks to its compact simplicity it can easily be implemented in systems with “small” processors and has spread relatively quickly.
+It was designed at IBM, is backed today by the Eclipse Foundation and recently underwent OASIS standardization.</p>
+</div>
+<div class="paragraph">
+<p>The MQTT protocol is transmitted via TCP and uses a publisher - subscriber design model.
+There is one central point (MQTT broker), that handles the exchange of messages.
+Messages are sorted into topics, and devices either publish in the given topic, meaning that they send data to the broker, which stores and distributes them to other devices, or they subscribe to a topic or topics, and the broker then sends all messages with the given topic to the device.
+Of course one device can at the same time be a publisher for some topics and a subscriber for others.</p>
+</div>
+<div class="paragraph">
+<p>The content of messages is not given or required in any way; MQTT is “payload agnostic”.
+The content of messages is simply binary data that is transmitted.
+JSON, BSON and text messages are used most often, but it can really be anything.
+The size of the message in the current version of the protocol is limited to almost 256MB, but most messages are much smaller&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>MQTT minimizes the amount of ballast data, so it only adds a minimum of service data.
+It establishes three levels of QoS (Quality of Service) - which pertains to message confirmation, with the lowest level meaning that the message is sent without confirmation and delivery is not guaranteed (at-most-once), the middle level says that the message is delivered at least once, and the highest level, QoS 2, means that each message is delivered exactly once.
+However, a client need not support all three levels of QoS.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mqtt_in_more_detail"><a class="anchor" href="#_mqtt_in_more_detail"></a>MQTT in more detail</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Messages in MQTT belong to certain topics.
+Each message belongs to a single topic.
+Topics are hierarchical and separated by slashes.
+For example, hypothetical “light number 26 on the ceiling in room 103, first floor, building 1” might have the topic <code>building-1/floor-1/room-103/ceiling/light-26</code>.
+Or perhaps <code>house/bedroom/light</code>.
+Topics in the MQTT chain are in UTF-8, so naming with diacritical marks is not a problem.</p>
+</div>
+<div class="paragraph">
+<p>Hierarchy is not fixed, it depends on the application and how you design it.
+Correctly designing the hierachy may be no trivial task.
+The best structure is not always the “natural” one.
+In this regard it is important to consider the data model and interface and find a suitable arrangement where topics logically go together.</p>
+</div>
+<div class="paragraph">
+<p>The publisher, the person who produces the message, selects the topic and sends it together with the message.
+It need not configure or check the topic, as soon as the broker receives a message for a topic that it does not yet have, it configures the topic.
+The important thing is that the publisher and subscriber agree in advance on the topic to be used.
+Usually this will be given by the data model.</p>
+</div>
+<div class="paragraph">
+<p>Devices request to subscribe to messages in the same way - by sending the broker a special “subscribe” mesage with the name of the topic they want to subscribe to.
+Here, they may use wildcard symbols <code><mark></code> and <code>+</code>. The <code>+</code> symbol replaces one level, e.g. <code>building1/floor1/+/door</code> addresses the doors in all rooms on the first floor of building 1 - i.e. <code>building1/floor1/room101/door</code>, <code>building1/floor1/room102/door</code>, <code>building1/floor1/toilets/door</code> etc.
+The <code></mark></code> wildcard symbol replaces one or more levels and must always be last.
+Subscribing to topic <code>building1/floor1/#</code> means that messages will be received with all topics pertaining to the first floor of building 1.</p>
+</div>
+<div class="paragraph">
+<p>There is one more note regarding naming convention:
+If the name of the topic starts with the <code>$</code> symbol, this is a special topic publishers cannot publish to.
+This is used as a special topic for messages which the broker needs to send.
+The most widely used approach is to begin topics with <code>$SYS/</code> - these usages are not yet fixed and a list of recommended topic names is available at MQTT Wiki: <a href="https://github.com/mqtt/mqtt.github.io/wiki/SYS-Topics" class="bare">https://github.com/mqtt/mqtt.github.io/wiki/SYS-Topics</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exchanging_messages"><a class="anchor" href="#_exchanging_messages"></a>Exchanging messages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initially the client (device, node) establishes a connection with the broker via TCP.
+This most often uses port 1883, or port 8883 for a connection via TLS.
+Another approach that is used is a connection via WebSockets (ws/wss), most often to ports 8080/8081 (or via reverse proxy to ports 80 and 443), but naturally it is possible to set communication in any way.</p>
+</div>
+<div class="paragraph">
+<p>After establishing a connection, the device sends a <code>CONNECT</code> message, usually with a clean session flag to ensure that the session starts without any subscriptions to any topics.
+Connection can also take place with some basic verification of name and password.
+The broker responds with the message <code>CONNACK</code>, which confirms the connection.</p>
+</div>
+<div class="paragraph">
+<p>Next there may be one or more <code>SUBSCRIBE</code> messages with the names of the topics which the device wants to subscribe to.
+See above for details.
+The broker confirms by sending <code>SUBACK</code>.
+Of course, at any time after connecting and receiving confirmation (<code>CONNACK</code>), the device can request to subscribe to other topics.</p>
+</div>
+<div class="paragraph">
+<p>Once connected and confirmed (<code>CONNACK</code>), everything is set and both the device and broker can send messages using <code>PUBLISH</code>.</p>
+</div>
+<div class="paragraph">
+<p>A device can request to stop receiving a certain topic by sending an <code>UNSUBSCRIBE</code> message (the broker confirms this with <code>UNSUBACK</code>), and once its work is finished it sends a <code>DISCONNECT</code> message.</p>
+</div>
+<div class="paragraph">
+<p>In the event that the device has already been disconnected, it can connect without using a clean session, meaning that all previously subscribed topics will be retained.</p>
+</div>
+<div class="paragraph">
+<p>MQTT also detects whether the device is still active.
+If over a certain period of time a device fails to send a message, it is considered to have been forcibly disconnected and a “last will” is sent, which we will explain in a moment.
+For a device to avoid this situation, if it does not have any message to send, it should send a <code>PINGREQ</code>.
+The broker responds with a <code>PINGACK</code> message.</p>
+</div>
+<div class="paragraph">
+<p>If the connection is lost, the broker can send for a certain topic a “last will” message, which is a message that the device can send when sending a <code>CONNECT</code> message to connect with the broker.
+This message is not required.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_qos_retain"><a class="anchor" href="#_qos_retain"></a>QoS &amp; Retain</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So we have already taken a brief look at Quality of Service.
+We mentioned that there are three levels, 0, 1 and 2, that differ depending on degree of confirmation and manner of ensuring delivery.</p>
+</div>
+<div class="paragraph">
+<p>At level 0 (at most once, or fire and forget) the publisher sends a <code>PUBLISH</code> message to the broker and is done with it.
+The broker sends the given topic to subscribers in the same way.</p>
+</div>
+<div class="paragraph">
+<p>At level 1 (at least once) the publisher sends the broker a <code>PUBLISH</code> message and waits.
+The broker accepts the message and sends it to subscribers (again <code>PUBLISH</code>).
+Transmission takes place either via QoS 1 or QoS 0 if the device cannot handle QoS 1.
+The general rule, however, is that it is sent with the same QoS with which it was received.
+In this case, it is sent with QoS 1 (<code>PUBLISH</code>) and waits for confirmation from the recipient.
+As soon as the subscriber confirms receipt with a <code>PUBACK</code> message, the broker removes the message and sends a <code>PUBACK</code> message to the publisher.
+The publisher then knows that the message has been passed on by the broker and can get rid of it.
+The broker can send <code>PUBACK</code>, without getting confirmation from all recipients.
+The exact behavior depends on the implementation, usually it does this and MQTT enables both scenarios, i.e. waiting and not waiting.</p>
+</div>
+<div class="paragraph">
+<p>At level 2 (exactly once) the publisher sends a <code>PUBLISH</code> message to the broker.
+As in the previous case, the broker receives the message and sends it to subscribers, and then sends a <code>PUBREC</code> message back to the publisher (confirming receipt).
+The publisher responds with a <code>PUBREL</code> message, the broker deletes the message and confirms with <code>PUBCOMP</code>.
+This concludes the exchange.</p>
+</div>
+<div class="paragraph">
+<p>With respect to QoS, the broker sends the message on the level that it was received, with the option of lowering the level if the client can only handle a lower level.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/mqtt-qos-levels.png" alt="mqtt qos levels">
+</div>
+<div class="title">Figure 1. MQTT QoS Levels</div>
+</div>
+<div class="paragraph">
+<p>In addition to QoS, a message can also set the retain flag, i.e. a symbol that says that the broker should not delete the message after sending, but should save it and send it to new subscribers for the given topic.
+The broker always sends the last saved message with a retain flag.</p>
+</div>
+<div class="paragraph">
+<p>It is important to know that the publisher can send a message to the broker with any QoS.
+The broker will then send the message to subscribers with the same QoS.
+The same approach applies here.
+For QoS 2, for example, the broker sends the message to the subscriber, the subscriber confirms receipt (<code>PUBREC</code>), the broker verifies that it received confirmation (<code>PUBREL</code>) and the subscriber concludes communication with <code>PUBCOMP</code>.
+When subscribing however, the subscriber can specify the maximum QoS it wants to receive.
+The broker then sends messages it receives at the requested QoS.
+If a message is received by the broker at QoS 2, but the subscriber request a maximum of QoS 1, the broker will send the message with QoS 1.
+Of course, this means that the subscriber may get the message multiple times (because QoS 1 does not guarantee delivery “exactly once”).</p>
+</div>
+<div class="sect3">
+<h4 id="_an_example_of_mqtt_in_practice"><a class="anchor" href="#_an_example_of_mqtt_in_practice"></a>An example of MQTT in practice</h4>
+<div class="paragraph">
+<p>Let us assume the simplest situation possible, turning on a light bulb with a switch.</p>
+</div>
+<div class="paragraph">
+<p>The first idea is the simplest:
+The switch will be the publisher, and it will publish in the topic room/switch (for simplicity’s sake; in reality the name will probably be more complex), and the smart bulb has subscribed to receive messages with the topic room/switch and it will respond to messages.</p>
+</div>
+<div class="paragraph">
+<p>Something like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/mqtt-pub-sub-simple.png" alt="mqtt pub sub simple">
+</div>
+</div>
+<div class="paragraph">
+<p>The second approach is more complex and requires a certain amount of intelligence.
+The bulb need not listen only to the switch; the pathway may include a minimal amount of intelligence that evaluates messages from publishers and based on these sends instructions to subscribers.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/mqtt-pub-sub-extended.png" alt="mqtt pub sub extended">
+</div>
+</div>
+<div class="paragraph">
+<p>With this kind of arrangement it is much easier to give the entire system another level of abstraction.
+We can easily logically rearrange the entire system if necessary or add logic that the devices themselves do not implement - for example a step switch with a timer, or a “cross” switch where we control one light from multiple places, or other intelligent behavior.</p>
+</div>
+<div class="paragraph">
+<p>MQTT is very easy to use - many broker implementations exist (probably the most well known and widely used is the Mosquitto open-source MQTT broker <a href="http://mosquitto.org/">Mosquitto</a>) and even more client libraries for various languages (Java, Python, JavaScript, Ruby, Go or Erlang) and devices (Arduino, mbed, netduino, &#8230;&#8203;).
+You will find MQTT in cloud services (AWS IoT, Azure IoT), or in various home automation systems (Domoticz) or tools for smartphones.
+Without exaggeration it can be said that MQTT is really one of few IoT standards.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mqtt_and_bigclown"><a class="anchor" href="#_mqtt_and_bigclown"></a>MQTT and BigClown</h3>
+<div class="paragraph">
+<p>The BigClown Hub enables communcation via MQTT.
+Defines topics and subtopics for data, and also defines the format of messages sent.</p>
+</div>
+<div class="paragraph">
+<p>The topic addresses a specific node.
+In the case of BigClown Bridge project it is the Bridge Module, and its topic is <code>nodes/bridge/0/#</code>.
+If you connect another Bridge Module, the topic will be <code>nodes/bridge/1</code> etc.</p>
+</div>
+<div class="paragraph">
+<p>Each sensor and actuator has its own subtopic, which gives the class of the device (thermometer, barometer etc.), and says where the device is connected, i.e. to which I<sup>2</sup>C bus and with what address.</p>
+</div>
+<div class="paragraph">
+<p>The following table gives a summary of all the devices available in Bridge project:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Part of topic</th>
+<th class="tableblock halign-left valign-top">Payload key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">led/-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-48</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-48</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-49</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-49</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luxmeter/i2c0-44</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luxmeter/i2c1-44</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luxmeter/i2c0-45</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luxmeter/i2c1-45</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c0-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pressure, altitude</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c1-60</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c0-5f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relative-humidity, temperature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c1-5f</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">co2-sensor/i2c0-38</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">concentration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3f</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>In their basic settings the yellow highlighted devices do not require soldering to the tag or module.</p>
+</div>
+<div class="paragraph">
+<p>The complete topic consists of the topic for the given node and the subtopic of the specific sensor or actuator.
+For example, <code>nodes/bridge/0/thermometer/i2c0-48</code>.
+This would be the address of the thermometer connected to the I2C0 bus with the address 0x48 (i.e. the Temperature Tag) on Bridge Module number 0.</p>
+</div>
+<div class="paragraph">
+<p>The actual data (payload) is formatted as a JSON object {"key": value}.
+The key is in the table, listed above (e.g. for a thermometer it is "temperature").
+The value will either be boolean (true/false), or a simple chain, or a field of two values, where the first contains the measured value and the second the unit.
+If the particular sensor measures multiple variables, the JSON object will have more key-value pairs.</p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>nodes/bridge/0/lux-meter/i2c0-44 : {"illuminance": [829.44, "lux"]}
+nodes/bridge/0/lux-meter/i2c1-44 : {"illuminance": [994.56, "lux"]}
+nodes/bridge/0/barometer/i2c1-60 : {"pressure": [97.062, "kPa"], "altitude": [361.3, "m"]}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You see the values from two lux meters (each on a different bus) and from the barometer (here there are two values, pressure and altitude).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references"><a class="anchor" href="#_references"></a>References</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>MQTT<br>
+<a href="http://mqtt.org/" class="bare">http://mqtt.org/</a></p>
+</li>
+<li>
+<p>List of clients for MQTT:<br>
+<a href="http://www.hivemq.com/blog/seven-best-mqtt-client-tools" class="bare">http://www.hivemq.com/blog/seven-best-mqtt-client-tools</a></p>
+</li>
+<li>
+<p>Best practices for MQTT:<br>
+<a href="http://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices" class="bare">http://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices</a></p>
+</li>
+<li>
+<p>Installation of Mosquito MQTT broker on Raspberry Pi:<br>
+<a href="http://www.4makers.info/instalace-mosquitto-na-raspi-ze-zdrojovych-kodu/" class="bare">http://www.4makers.info/instalace-mosquitto-na-raspi-ze-zdrojovych-kodu/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>

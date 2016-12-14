@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>I<sup>2</sup>C Communication Interface</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/i2c.html" class="current">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html">MQTT Messaging</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/academy/i2c.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content academy academy_i2c">
+        <h1>
+          I<sup>2</sup>C Communication Interface
+        </h1>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the world of the internet we encounter many abbreviations and names for technology that can be confusing for a novice.
+Let’s take a look at some of them and see what they mean.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_abbreviation_em_i_sup_2_sup_c_em"><a class="anchor" href="#_abbreviation_em_i_sup_2_sup_c_em"></a>Abbreviation <em>I<sup>2</sup>C</em></h3>
+<div class="paragraph">
+<p>I<sup>2</sup>C, or more correctly I<sup>2</sup>C (read I squared C and standing for Inter-Integrated Circuit) is a serial bus that has become a de facto standard for connecting various sensors and other electronic devices.
+It was developed by the Philips Company, and since I<sup>2</sup>C is a registered trademark, some manufacturers use the abbreviation TWI (Two Wire Interface).
+Practically it means the same thing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_abbreviation_em_serial_em"><a class="anchor" href="#_abbreviation_em_serial_em"></a>Abbreviation <em>Serial</em></h3>
+<div class="paragraph">
+<p>Every peripheral, sensor or similar device must be connected in some way to a control unit.
+In electronics this control unit is often a microcontroller (dedicated computer embedded in a single chip).
+This component is programmable, contains program memory and data, and is most often tasked with communicating with peripherals and serving them so that they do what the designer intended.</p>
+</div>
+<div class="paragraph">
+<p>Microcontrollers communicate with the surrounding world through either a parallel connection, most often consisting of eight data signals, so that it is able to transfer an entire byte of data at once, or through a serial connection where data is transmitted as a sequence of bits.
+A parallel connection is theoretically faster, but it has its drawbacks: you must connect multiple wires, which takes up some space on the board.
+A serial connection is theoretically slower, but since data is sent along a single wire that can easily be shielded, it is able to handle communication over greater distances.
+It is also not necessary to connect so many wires as in the case of a parallel connection.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_abbreviation_em_bus_em"><a class="anchor" href="#_abbreviation_em_bus_em"></a>Abbreviation <em>Bus</em></h3>
+<div class="paragraph">
+<p>Sometimes a single device is connected rigidly to certain microcontroller pins.
+The programmer then knows that the given pins are working with a single specific device.
+Unfortunately, the number of pins is not unlimited and there may be multiple devices.
+In such cases a bus is used.
+A bus is a manner of connection where one or more devices are connected to one or more wires, and where the bus always communicates in some manner with only one of them at a time.
+There are several types of serial buses (1-Wire, SPI, I<sup>2</sup>C, &#8230;&#8203;) that vary in terms of attributes, the number of wires required, and the manner of selecting the device with which they communicate.</p>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_i_sup_2_sup_c_bus"><a class="anchor" href="#_i_sup_2_sup_c_bus"></a>I<sup>2</sup>C Bus</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In our case a pair of signals are used for connection, SCL (Synchronous Clock) and SDA (Synchronous Data). The I<sup>2</sup>C bus always has one control device (usually a microcontroller called Master) and several controlled devices (Slaves).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/i2c.png" alt="i2c">
+</div>
+<div class="title">Figure 1. I<sup>2</sup>C Bus Topology</div>
+</div>
+<div class="paragraph">
+<p>In theory the I<sup>2</sup>C bus can connect up to 128 devices (but in reality certain addresses are reserved for special purposes).
+To clearly indicate which one it is communicating with, each device has an address ranging from 0-127 (Ox7F), i.e. seven bit.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately, device addresses cannot be arbitrarily changed (unless it is a peripheral&#8217;s feature).
+Most devices have an address given by the manufacturer, or possible a range of addresses.
+For example, the TMP112 thermometer has the address 0x48 or 0x49.
+To enable designers to select which address to use, this component has a reserved pin address, and depending on whether it is connected to ground or the power supply, the address of the component is 0x48 or 0x49.</p>
+</div>
+<div class="paragraph">
+<p>If the designer wants to connect a single TMP112 thermometer, he will connect its address input to ground and the component will have the address 0x48.
+If he wants to connect another to the same bus, he will connect the address output to the power supply, and the component will have the address 0x49.
+What happens if he wants to connect a third?
+Unfortunately, this is not possible. He must choose a different I<sup>2</sup>C bus - microcontrollers usually have two, marked I<sup>2</sup>C0 and I<sup>2</sup>C1.
+He can, however, connect other devices to the same bus, provided that they have different addresses.</p>
+</div>
+<div class="paragraph">
+<p>List of certain devices and their addresses in the BigClown system:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Device</th>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">I<sup>2</sup>C Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accelerometer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIS2DH12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x19</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature Sensor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TMP112</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x48 / 0x49</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NFC Tag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NT3H2111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Humidity Sensor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HDC2080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x40</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Barometer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MPL3115A2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x60</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lux Meter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPT3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x44 / 0x45</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relay Module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCA9534A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x3B / 0x3F</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_communication_through_i_sup_2_sup_c"><a class="anchor" href="#_communication_through_i_sup_2_sup_c"></a>Communication through I<sup>2</sup>C</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When idle both the SCL and SDA wires will have a logical 1 (pull-up keep signals at this level).
+The Master always starts communication by setting SCL to logical 1 and SDA to logical 0 - START event.
+This signal means that communication has begun and all devices begin listening.
+The Master then sends the address of the device with which it wants to communicate.
+It transmits bit by bit from the least significant along the SDA line, and each bit is confirmed by a pulse on the SCL line.
+After transmitting the seven bits of the address and the eighth bit that determines whether the master wants to read or write, all devices with a different address disconnect and only the device whose address was sent continues to communicate.
+Based on the acknowledging ACK bit, the master then determines whether the device has signalled that it has recognized its address and is ready to transmit data.
+Then the actual transmission takes place, either from the master to the slave (the master controls SDA and SCL), or the opposite direction, from the device (slave) to the microcontroller (master), when the master sends the SCL clock signal but the SDA data line is controlled by the device.
+At the end of the transmission the Master sets SCL to 1 and then SDA to 1, which sends a “STOP event”.
+The bus is then idle.</p>
+</div>
+<div class="paragraph">
+<p>The actual form of data is different for each device.
+Some very simple sensors send only a byte with a value.
+Most devices however contain several control and data registers, and to function correctly these registers must first be set properly for the device to start working.
+For example, the real time clock must first be allowed to run.
+The Master then communicates with devices by writing to and reading from them.</p>
+</div>
+<div class="paragraph">
+<p>The problem of insufficient address space is resolved by the new standard I<sup>2</sup>C bus, which introduces a ten-bit address, i.e. from the range of 0-1023.
+But not all circuits implement this standard.</p>
+</div>
+<div class="paragraph">
+<p>The programmer generally needs not to worry about generating and following signals; microcontrollers contain special circuits for communicating through the I<sup>2</sup>C bus (sometimes more than one), so the work of the programmer is limited to entering the data that is to be sent and reading the data that arrives through the bus.</p>
+</div>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>
