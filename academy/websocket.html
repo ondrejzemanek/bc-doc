@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>WebSocket Protocol</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/clown-talk.html">Clown.Talk and Clown.Model</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/i2c.html">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html">MQTT Messaging</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/websocket.html" class="current">WebSocket Protocol</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/academy/websocket.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content academy academy_websocket">
+        <h1>
+          WebSocket Protocol
+        </h1>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Web programmers who have done more than just work with content management systems are certainly familiar with the principle of web sockets.
+Basically it is a communication link established between two processes using IP technology.
+Simply put, a socket is described by the pair of IP addresses, protocol and port, that is used for communication.
+Higher level services use sockets to transmit data (usually in both directions).</p>
+</div>
+<div class="paragraph">
+<p>WebSocket is similar technology transferred to the world of web applications.
+We can use WebSocket to write web applications where the client (application in the browser) can establish two-way communication with the server, and can use this connection to exchange information in real time.
+There’s no need to use “heartbeat” technology, where the client regularly asks the server “Do you have something for me?” (and the server usually answers “No&#8230;&#8203;”).
+With WebSocket it’s much easier to create real-time applications like online chat or cooperative services, or various dashboards to monitor data from sensors or control actuators.</p>
+</div>
+<div class="paragraph">
+<p>An advantage is that the API is very simple and only requires four events and two methods.
+Unlike AJAX, the connection is constantly open with data being sent from either side.
+WebSocket has direct support for UTF-8 and follows the CORS security model as well as AJAX.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_websocket"><a class="anchor" href="#_using_websocket"></a>Using WebSocket</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://html.spec.whatwg.org/multipage/comms.html#network">WebSockets</a> offer a very simple interface to establish connections for the bi-directional exchange of messages between client and server.
+On the client side (most often in the browser) the WebSocket class is available.
+You can create instances of this class, and thus establish a connection with the server (provided, of course, that the server supports this technology).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span style="color:#080;font-weight:bold">var</span> myWebSocket = <span style="color:#080;font-weight:bold">new</span> WebSocket(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ws://www.server.cz/sluzba</span><span style="color:#710">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, the prefix <code>ws://</code> is used for the WebSocket URL. If the connection uses SSL/TLS, then <code>wss://</code> can be used.
+When creating a new WebSocket class object, a connection is established using the ws/wss protocol and messages can be sent.</p>
+</div>
+<div class="paragraph">
+<p>WebSocket messages are not sophisticated objects - just a simple string, and their format depends on the developer’s application.</p>
+</div>
+<div class="paragraph">
+<p>A WebSocket object offers four events called <code>onopen</code>, <code>onmessage</code>, <code>onerror</code> and <code>onclose</code>.
+The names are fairly self-explanatory:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Event <code>onopen</code> is called when opening a connection.
+This can serve to indicate that messages can now be sent.</p>
+</li>
+<li>
+<p>Event <code>onclose</code> announces the connection has been closed.</p>
+</li>
+<li>
+<p>Event <code>onerror</code> arises when any error occurs when transmitting data or establishing a connection.</p>
+</li>
+<li>
+<p>Event <code>onmessage</code> event serves for the actual exchange of data.
+As the name suggests, it is called when a message comes from the server.
+The body of the message is transmitted in the attributes of the event.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">myWebSocket.<span style="color:#06B;font-weight:bold">onopen</span> = <span style="color:#080;font-weight:bold">function</span>(e) {
+  console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Connection opened.</span><span style="color:#710">&quot;</span></span>);
+};
+
+myWebSocket.<span style="color:#06B;font-weight:bold">onmessage</span> = <span style="color:#080;font-weight:bold">function</span>(e) {
+  console.log( <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Message received: </span><span style="color:#710">&quot;</span></span> + e.data);
+};
+
+myWebSocket.<span style="color:#06B;font-weight:bold">onclose</span> = <span style="color:#080;font-weight:bold">function</span>(e) {
+  console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Connection closed.</span><span style="color:#710">&quot;</span></span>);
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To send messages use method <code>send(data)</code>.
+The parameters are the string, blob or ArrayBuffer to be sent.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">myWebSocket.send(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello server!</span><span style="color:#710">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When done running the application, it is possible to close the connection by using method <code>close()</code>.</p>
+</div>
+<div class="paragraph">
+<p>The server side requires more than just a regular HTTP server – a server that supports WebSocket technology is needed.
+One possibility is to use special services, e.g. a Kaazing or Jetty server, or possibly a local WebSockets node.
+There is also <a href="https://github.com/google/pywebsocket">pywebsocket</a>, an implementation written in Python that functions as a stand-alone server, but that can also work with an Apache server (mod_pywebsocket).
+Here at BigClown, we decided to use an <a href="https://nginx.org">nginx HTTP server</a>, which in addition to other functions also offers direct ws/wss integration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples_of_using_websocket"><a class="anchor" href="#_examples_of_using_websocket"></a>Examples of using WebSocket</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let’s look at a simple example that sets up a WebSocket connection with the Clown.Hub server, sends a message, and displays the received message.</p>
+</div>
+<div class="paragraph">
+<p>First, we prepare the framework for the application that will serve the WebSocket:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span style="color:#080;font-weight:bold">var</span> websocket;
+
+<span style="color:#080;font-weight:bold">var</span> <span style="color:#06B;font-weight:bold">wsConnect</span> = <span style="color:#080;font-weight:bold">function</span>(wsUri) {
+  <span style="color:#080;font-weight:bold">try</span> {
+    websocket = WebSocket.connect(wsUri);
+    websocket.<span style="color:#06B;font-weight:bold">onopen</span> = <span style="color:#080;font-weight:bold">function</span>(evt) { onOpen(evt) };
+    websocket.<span style="color:#06B;font-weight:bold">onclose</span> = <span style="color:#080;font-weight:bold">function</span>(evt) { onClose(evt) };
+    websocket.<span style="color:#06B;font-weight:bold">onmessage</span> = <span style="color:#080;font-weight:bold">function</span>(evt) { onMessage(evt) };
+    websocket.<span style="color:#06B;font-weight:bold">onerror</span> = <span style="color:#080;font-weight:bold">function</span>(evt) { onError(evt) };
+  } <span style="color:#080;font-weight:bold">catch</span> (e) {
+    console.log(e);
+    <span style="color:#080;font-weight:bold">return</span>;
+  }
+}
+
+<span style="color:#777">// After connecting the initialization message is sent:</span>
+<span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">onOpen</span>(evt) {
+  websocket.send(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">[&quot;clown.talk/-/config/set&quot;, {}]</span><span style="color:#D20">\n</span><span style="color:#710">'</span></span>);
+}
+
+<span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">onClose</span>(evt) {
+  <span style="color:#777">// What should happen when closing the connection</span>
+}
+
+<span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">onMessage</span>(evt) {
+  <span style="color:#080;font-weight:bold">var</span> rawData = JSON.parse(evt.data);
+  <span style="color:#080;font-weight:bold">var</span> topic = rawData[<span style="color:#00D">0</span>];
+  <span style="color:#080;font-weight:bold">var</span> payload = rawData[<span style="color:#00D">1</span>];
+  console.log(rawData, topic ,payload);
+}
+
+<span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">onError</span>(evt) {
+  console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error: </span><span style="color:#710">&quot;</span></span> + evt.data);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We initialize the connection by calling the wsConnect function, where we pass on the WebSocket address to the server.</p>
+</div>
+<div class="paragraph">
+<p>For example:<br>
+<code>wss://localhost/auth/clown-talk-server_nodes_bridge_0</code>.</p>
+</div>
+<div class="paragraph">
+<p>Part of the URL can also be the name and password for the connection in the form <code>name:password@server</code>, or specifically:<br>
+<code>wss://clown:bigclown@localhost/auth/clown-talk-server_nodes_bridge_0</code>.</p>
+</div>
+<div class="paragraph">
+<p>After calling the <code>wsConnect</code> function, the connection is established and if everything is in order, the <code>onOpen</code> function is called.
+This sends an initialization message to Clown.Hub.
+The <code>onMessage</code> function responds to messages received - it receives them, expects them to be in Clown.Talk format, parses them and displays them on the data received console.</p>
+</div>
+<div class="paragraph">
+<p>Messages can be sent easily using <code>websocket.send()</code>.
+For example, we can send a message for a relay:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">websocket.send(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">[</span><span style="color:#b0b">\&quot;</span><span style="color:#D20">relay/i2c0-3b/set</span><span style="color:#b0b">\&quot;</span><span style="color:#D20">, {</span><span style="color:#b0b">\&quot;</span><span style="color:#D20">state</span><span style="color:#b0b">\&quot;</span><span style="color:#D20">:false}]</span><span style="color:#710">&quot;</span></span>);</code></pre>
+</div>
+</div>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>

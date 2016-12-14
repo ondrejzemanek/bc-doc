@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>Clown.Talk and Clown.Model</title>
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+  <a href="https://www.bigclown.com/">
+    <img src="/images/bigclown-logo.svg" alt="BigClown - Open-Source Electronics" class="header-logo" />
+  </a>
+</header>
+
+
+    <input type="checkbox" id="navbar-toggle" role="button" />
+<label for="navbar-toggle">
+  <span class="icon-burger"></span>
+</label>
+
+<nav class="navbar">
+  <ul>
+  <li class="level0">
+    <a href="/">Main page</a>
+  </li>
+  <li class="level1">
+    <a href="/academy/">Academy</a>
+      <ul>
+  <li class="level2">
+    <a href="/academy/clown-talk.html" class="current">Clown.Talk and Clown.Model</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/i2c.html">I<sup>2</sup>C Communication Interface</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/mqtt.html">MQTT Messaging</a>
+  </li>
+  <li class="level2">
+    <a href="/academy/websocket.html">WebSocket Protocol</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/alpha/">ALPHA SET</a>
+      <ul>
+  <li class="level2">
+    <a href="/alpha/macos.html">Software setup for macOS</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/raspberry-pi.html">Software setup for Raspberry Pi</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/ubuntu.html">Software setup for Ubuntu</a>
+  </li>
+  <li class="level2">
+    <a href="/alpha/windows.html">Software setup for Windows</a>
+  </li>
+</ul>
+
+  </li>
+  <li class="level1">
+    <a href="/tutorial/">Tutorials</a>
+      <ul>
+  <li class="level2">
+    <a href="/tutorial/blynk.html">Blynk integration</a>
+  </li>
+  <li class="level2">
+    <a href="/tutorial/mqtt.html">MQTT – Message transfer protocol</a>
+  </li>
+</ul>
+
+  </li>
+</ul>
+
+</nav>
+
+
+    <div id="main-wrapper">
+      <div class="toolbar">
+  <ul class="toolbar-actions">
+    <li>
+      <a href="https://github.com/bigclownlabs/bc-doc/edit/master/source/academy/clown-talk.adoc" rel="external" title="Edit on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon"><use xlink:href="#icon-pencil" /></svg><span class="icon-label">Improve this page</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      <article class="main-content academy academy_clown-talk">
+        <h1>
+          Clown.Talk and Clown.Model
+        </h1>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The BigClown system is based on the exchange of messages using MQTT technology (see corresponding article <a href="mqtt.html">here</a>).
+However, there are places in the system where MQTT cannot be used directly - for example, web browsers do not yet use it.
+For such places and situations we have devised the Clown.Talk protocol, which can very easily be introduced as a “serialized MQTT”.</p>
+</div>
+<div class="paragraph">
+<p>Clown.Talk is a de facto an MQTT message, written in simple text format - specifically in JSON notation.
+It is a JSON field with two elements: the first is the name of the MQTT topic, the second the actual content of the message (payload).
+The message ends with “\n” (new line, 0x0a).</p>
+</div>
+<div class="paragraph">
+<p>Format:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>[topic (string), payload (object)]\n</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The topic is the same as for MQTT, for example <code>barometer/i2c0-60</code>, the payload corresponds to the body of the message as defined by Clown.Model.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{<span style="color:#606"><span style="color:#404">&quot;</span><span>pressure</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">101.9</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">kPa</span><span style="color:#710">&quot;</span></span>]}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A third, optional element of the field is the object that defines additional parameters of the message, such as its source and destination, possibly the level of QoS (determines how the message should be delivered, whether the sender requires confirmation, etc.).
+This part is not used in the current version of Clown.Hub.</p>
+</div>
+<div class="paragraph">
+<p>Clown.Talk requires that the client initialize transmission.
+After establishing a connection, it is necessary to send an introductory message with the topic <code>clown.talk/-/config/set</code> and an empty body, i.e.:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>["clown.talk/-/config/set", {}]\n</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_clown_model"><a class="anchor" href="#_clown_model"></a>Clown.Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Clown.Model handles the creation and structuring of MQTT topics and the content of messages.
+If defines four basic scenarios, and based on these, governs the creation of topic names.
+The first scenario involves notifications (from the node to the system).
+Their subtopic is single level, for example <code>boot</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">boot</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>reason-for-reset</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">power-on</span><span style="color:#710">&quot;</span></span>}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The second scenario, probably more frequent, concerns data from sensors.
+This type of message uses a two-level subtopic name, where the first part describes the type of sensor and the second its address, i.e. the specific I<sup>2</sup>C bus and I<sup>2</sup>C address, separated by a hyphen.</p>
+</div>
+<div class="paragraph">
+<p>Examples: <code>thermometer/i2c0-48</code>, <code>thermometer/i2c1-49</code>, <code>barometer/i2c0-60</code> etc.
+If the device does not use I2C, then the hyphen will appear in the address position - e.g. <code>pir/-</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c0-48</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>temperature</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">20.01</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">℃</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c1-48</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>temperature</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">25.15</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">℃</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">lux-meter/i2c0-44</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>illuminance</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">600.1</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">lux</span><span style="color:#710">&quot;</span></span>]}
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">humidity-sensor/i2c0-5f</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>relative-humidity</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">30.2</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">%</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">barometer/i2c0-60</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>pressure</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">101.9</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">kPa</span><span style="color:#710">&quot;</span></span>], <span style="color:#606"><span style="color:#404">&quot;</span><span>altitude</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">583.0</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">m</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">co2-sensor/i2c0-38</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>concentration</span><span style="color:#404">&quot;</span></span>: [<span style="color:#00D">300</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ppm</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">pir/-</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>event-count</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">1467</span>}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The third scenario involves messages that require a device to perform an action, typically switching relays or changing LED status.
+The system sends these messages to nodes.
+The subtopic has three levels: type of device, I<sup>2</sup>C address, and event.
+Type of device and address are the same as in the previous scenario, the event is either “set”, or “get” - set the actuator, or request some information (status, measurement results etc.).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">led/-/set</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>state</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">on</span><span style="color:#710">&quot;</span></span>}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">relay/i2c0-3b/set</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>state</span><span style="color:#404">&quot;</span></span>: <span style="color:#069">true</span>}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c0-48/get</span><span style="color:#710">&quot;</span></span>, {}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The fourth scenario is “demand and response”, typically when setting and reading the configuration of a node or device.
+The subtopic is four-level; the previous two levels, "type/adress", and now request and event.
+The subtopic of the response will have confirmation instead of an event (ok/error):</p>
+</div>
+<div class="paragraph">
+<p>Setting the intervals for message transmission:</p>
+</div>
+<div class="paragraph">
+<p>From hub to device:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c0-48/config/set</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>publish-interval</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">30</span>}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Response from device to hub:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c0-48/config/ok</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>publish-interval</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">30</span>}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Checking device capabilities:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">clown.talk/-/config/set</span><span style="color:#710">&quot;</span></span>, {}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">clown.talk/-/config/ok</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>ack</span><span style="color:#404">&quot;</span></span>: <span style="color:#069">false</span>, <span style="color:#606"><span style="color:#404">&quot;</span><span>device</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">bridge</span><span style="color:#710">&quot;</span></span>, <span style="color:#606"><span style="color:#404">&quot;</span><span>capabilities</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">1</span>, <span style="color:#606"><span style="color:#404">&quot;</span><span>firmware-datetime</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2016-07-01T21:46:07.057Z</span><span style="color:#710">&quot;</span></span>]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Getting a list of devices:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-/-/config/list</span><span style="color:#710">&quot;</span></span>, {}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-/-/config/ok</span><span style="color:#710">&quot;</span></span>, {
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>sensors</span><span style="color:#404">&quot;</span></span>: [
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c0-48</span><span style="color:#710">&quot;</span></span>,
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">thermometer/i2c1-48</span><span style="color:#710">&quot;</span></span>,
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">lux-meter/i2c0-44</span><span style="color:#710">&quot;</span></span>,
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">co2-sensor/i2c0-38</span><span style="color:#710">&quot;</span></span>
+  ], <span style="color:#606"><span style="color:#404">&quot;</span><span>actuators</span><span style="color:#404">&quot;</span></span>: [
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">led/-</span><span style="color:#710">&quot;</span></span>,
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">relay/i2c0-3b</span><span style="color:#710">&quot;</span></span>,
+    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">relay/i2c0-3f</span><span style="color:#710">&quot;</span></span>],
+    <span style="color:#606"><span style="color:#404">&quot;</span><span>notifications</span><span style="color:#404">&quot;</span></span>: [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">boot</span><span style="color:#710">&quot;</span></span>]
+  }
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The actual message content is formatted as a JSON object, i.e. a <code>key: value</code> pair.
+In sensors, the key is always the name of the measured quantity, and the value is the measured value.
+For limitless quantities, (number of pulses, etc.) it is only the given value (123, on, true, etc.).
+For quantities with a unit, a field with two elements is used: the first containing the value, the second the chain with the unit name.
+If the sensor measures multiple quantities (for example pressure and altitude), it will send multiple values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">lux-meter/i2c0-44</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>illuminance</span><span style="color:#404">&quot;</span></span>: [<span style="color:#00D">600</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">lux</span><span style="color:#710">&quot;</span></span>]}
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">barometer/i2c0-60</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>pressure</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">101.9</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">kPa</span><span style="color:#710">&quot;</span></span>], <span style="color:#606"><span style="color:#404">&quot;</span><span>altitude</span><span style="color:#404">&quot;</span></span>: [<span style="color:#60E">583.0</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">m</span><span style="color:#710">&quot;</span></span>]}]
+
+[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">relay/i2c0-3b</span><span style="color:#710">&quot;</span></span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>state</span><span style="color:#404">&quot;</span></span>: <span style="color:#069">true</span>}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A more detailed description can be found in the technical specifications for Clown.Model:
+<strong>TODO: Insert link to Clown.Talk reference documentation</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_practical_example_clown_model_for_bridge_project"><a class="anchor" href="#_practical_example_clown_model_for_bridge_project"></a>Practical example: Clown.Model for Bridge project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here is a summary of all subtopics and messages that you can send or receive with Bridge project.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Sensor/Actuator</th>
+<th class="tableblock halign-left valign-top">MQTT Subtopic</th>
+<th class="tableblock halign-left valign-top">Message Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">led/-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thermometer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-48</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">temperature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-48</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c0-49</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thermometer/i2c1-49</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lux meter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">luxmeter/i2c0-44</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">illuminance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c1-44</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c0-45</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lux-meter/i2c1-45</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Barometer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c0-60</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pressure, altitude</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">barometer/i2c1-60</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Humidity sensor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c0-40</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relative-humidity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c0-41</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c1-40</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">humidity-sensor/i2c1-41</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CO2 sensor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">co2-sensor/i2c0-38</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">concentration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relay/i2c0-3f</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+      </article>
+
+      <footer>
+  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</footer>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     version="1.1"
+     style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="icon-pencil" viewBox="0 0 28 32">
+      <title>pencil</title>
+      <path d="M22 2l-4 4 6 6 4-4-6-6zM0 24l0.021 6.018 5.979-0.018 16-16-6-6-16 16zM6 28h-4v-4h2v2h2v2z"/>
+    </symbol>
+  </defs>
+</svg>
+
+  </body>
+</html>
